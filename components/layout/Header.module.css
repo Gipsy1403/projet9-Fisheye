@@ -1,0 +1,11 @@
+.header{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 2rem;
+}
+
+.bar_navigation{
+	font-size: 36px;
+	color: var(--primary);
+}

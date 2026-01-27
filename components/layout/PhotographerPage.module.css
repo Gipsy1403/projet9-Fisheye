@@ -1,0 +1,63 @@
+.photographers{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 4rem 0;
+	padding: 0 2rem;
+	background-color: var(--background);
+	border-radius: 5px;
+	height: 313px;
+}
+
+.name{
+	color: var(--secondary);
+}
+.city{
+	color: var(--primary);
+}
+.portrait{
+	border-radius: 50%;
+	object-fit: cover;
+	aspect-ratio: 1/1;
+}
+.container_media{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 100%;
+	gap: 4rem;
+}
+.card{
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	width: 350px;
+	height: 351px;
+}
+.card .picture{
+	border-radius: 5px;
+	object-fit: cover;
+	height: 100%;
+}
+.description{
+	height: 51px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.description .title {
+	border-radius: 5px;
+	color: var(--primary);
+	width: 85%;
+}
+.description .likes_red{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 15%;
+	
+}
+.description .likes{
+	color: var(--primary);
+	font-weight: 500;
+}

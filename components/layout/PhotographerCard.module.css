@@ -1,0 +1,25 @@
+.photographers{
+	display: grid;
+	grid-template-columns: repeat(3,1fr);
+	justify-content: space-between;
+	gap: 4rem;
+	margin: 4rem 0;
+}
+.card{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+}
+.name, .city{
+	color: var(--secondary);
+}
+.price{
+	color: var(--grey);
+}
+.portrait{
+	border-radius: 50%;
+	object-fit: cover;
+	aspect-ratio: 1/1;
+}
