@@ -2,8 +2,8 @@
 import {getPhotographer, getAllMediasForPhotographer} from '../../lib/prisma-db';
 import styles from "../../../components/layout/PhotographerPage.module.css";
 import Image from 'next/image';
-import ContactButton from '../../../components/ui/Button';
-import HeaderPhotographer from "../../../components/layout/Header-photographer"
+import HeaderPhotographer from "../../../components/layout/Header-photographer";
+import Link from 'next/link';
 
 
 export default async function PhotographerPage({params}){
@@ -20,7 +20,7 @@ export default async function PhotographerPage({params}){
 						<h3 className={styles.city}>{photographer.city}, {photographer.country}</h3>
 						<h4 className={styles.tagline}>{photographer.tagline}</h4>
 					</section>
-					<ContactButton></ContactButton>
+					<Link href={`/formulaire/${photographer.id}`}><button className={styles.contact_me}>Contactez-moi</button></Link>
 					<Image
 						className={styles.portrait}
 						src={`/assets/${photographer.portrait}`}
@@ -37,6 +37,8 @@ export default async function PhotographerPage({params}){
 				<div className={styles.container_media}>
 					{ImagesPhotographer.map((pictures)=>(
 					<div className={styles.card} key={pictures.id}>
+						{pictures.image ? (
+						// Si c'est une image
 						<Image
 							className={styles.picture}
 							src={`/assets/${pictures.image}`}
@@ -44,7 +46,15 @@ export default async function PhotographerPage({params}){
 							width={350}
 							height={300}
 						/>
-
+						) : pictures.video ? (
+						// Si c'est une vidéo
+						<video
+							className={styles.video_placeholder}
+							preload="none"
+						>
+							<source src={`/assets/${pictures.video}`} type="video/mp4" />
+						</video>
+						) : null}
 						<div className={styles.description}>
 							<h3 className={styles.title}>{pictures.title}</h3>
 							<div className={styles.likes_red}>
@@ -61,9 +71,6 @@ export default async function PhotographerPage({params}){
 					</div>
 					))}
 				</div>
-				<Image src="/assets/Travel _Adventure_Door.jpg" alt="test" 							width={350}
-							height={300}/>
-
 			</section>
 		</>
 	)

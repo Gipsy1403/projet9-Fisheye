@@ -1,0 +1,48 @@
+
+.container_formulaire{
+	width: 669px;
+	height: 900px;
+	background-color: var(--secondary);
+	border-radius: 5px;
+	padding: 1rem 2rem;
+	margin: auto;
+}
+.input{
+	background-color: var(--white);
+	height: 68px;
+	border-radius: 5px;
+	width: 100%
+}
+.input::placeholder{
+	opacity: 0;
+	padding-left: 1rem;
+	font-size: 22px;
+	transition: opacity 0.2s ease;
+}
+.input:focus::placeholder{
+	opacity: 1;
+}
+.textarea{
+	height: 170px;
+	background-color: var(--white);
+	border-radius: 5px;
+	width: 100%;
+	font-size: 22px;
+}
+.textarea::placeholder{
+	opacity: 0;
+	transition: opacity 0.2s ease;
+	padding-left: 1rem;
+}
+.textarea:focus::placeholder{
+	opacity: 1;
+}
+.send{
+	background-color: var(--primary);
+	color: var(--white);
+	width: 170px;
+	height: 69px;
+	font-size: 18px;
+	font-weight: 700;
+	border-radius: 5px;
+}

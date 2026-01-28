@@ -28,7 +28,7 @@ model Media {
 	photographerId	Int
 	title	String
 	image	String?
-    video   String?
+	video   String?
 	likes	Int
 	date	String
 	price	Int

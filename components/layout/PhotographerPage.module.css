@@ -15,6 +15,22 @@
 .city{
 	color: var(--primary);
 }
+
+.contact_me{
+	background-color: var(--primary);
+	color: var(--white);
+	width: 170px;
+	height: 69px;
+	font-size: 20px;
+	font-weight: 700;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.contact_me:hover{
+	background-color: #db8876;
+	color: var(--foreground);
+}
 .portrait{
 	border-radius: 50%;
 	object-fit: cover;
@@ -38,6 +54,8 @@
 	border-radius: 5px;
 	object-fit: cover;
 	height: 100%;
+	width: 350px;
+	height: 300px;
 }
 .description{
 	height: 51px;
@@ -49,6 +67,9 @@
 	border-radius: 5px;
 	color: var(--primary);
 	width: 85%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .description .likes_red{
 	display: flex;
