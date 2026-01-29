@@ -11,7 +11,6 @@ export default function Home() {
 		</header>
 		<main>
 			<PhotographerCard/>
-			{/* <PhotographerPage/> */}
 		</main>
 	</main>
 

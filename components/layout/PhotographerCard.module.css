@@ -6,11 +6,9 @@
 	margin: 4rem 0;
 }
 .card{
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+	margin: auto;
 	cursor: pointer;
+	text-align: center;
 }
 .name, .city{
 	color: var(--secondary);
@@ -22,4 +20,5 @@
 	border-radius: 50%;
 	object-fit: cover;
 	aspect-ratio: 1/1;
+	margin: auto;
 }

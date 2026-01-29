@@ -1,0 +1,33 @@
+.container_view{
+	width: 1258px;
+	height: 100%;
+	border: 2px solid #95fff9;
+	margin: auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	
+}
+.photo, .video{
+	width: 1050px;
+	height: 90%;
+	border-radius: 5px;
+	object-fit: cover;
+}
+.previous{
+	position: absolute;
+	top: 50%;
+	left: 25px;
+	color: var(--primary);
+	font-size: 64px;
+	transform: translateY(-50%);
+}
+.next{
+	position: absolute;
+	top: 50%;
+	right: 30px;
+	color: var(--primary);
+	font-size: 64px;
+	transform: translateY(-50%);
+}
