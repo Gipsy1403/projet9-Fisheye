@@ -1,13 +1,15 @@
 
 "use client";
 
-import Modal from "../ui/Modal";
 import styles from "./PhotographerMedia.module.css";
 import Image from 'next/image';
 import HeaderPhotographer from "./Header-photographer";
 import { useState } from "react";
 import ContactModal from "../ui/ContactModal";
 import MediaModal from "../ui/MediaModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faVideo} from "@fortawesome/free-solid-svg-icons";
+import Likes from "./Likes";
 
 
 export default function PhotographerMedia({photographer, imagesPhotographer}){
@@ -19,24 +21,27 @@ export default function PhotographerMedia({photographer, imagesPhotographer}){
 		<>
 			<HeaderPhotographer />
 			<article className={styles.photographers}>
-					<section>
-						<h1 className={styles.name}>{photographer.name}</h1>
-						<h3 className={styles.city}>{photographer.city}, {photographer.country}</h3>
-						<h4 className={styles.tagline}>{photographer.tagline}</h4>
-					</section>
-					<button className={styles.contact_me} onClick={() => setModalOpen(true)}>
-						Contactez-moi
-					</button>
-					<Modal open={modalOpen} close={() => setModalOpen(false)} title={`Contactez ${photographer.name}`}>
-          				<ContactModal photographer={photographer}/>
-        				</Modal>
-					<Image
-						className={styles.portrait}
-						src={`/assets/${photographer.portrait}`}
-						alt={`Portrait de ${photographer.name}`}
-						width={200}
-						height={200}
-					/>
+				<section>
+					<h1 className={styles.name}>{photographer.name}</h1>
+					<h3 className={styles.city}>{photographer.city}, {photographer.country}</h3>
+					<h4 className={styles.tagline}>{photographer.tagline}</h4>
+				</section>
+				<button className={styles.contact_me} onClick={() => setModalOpen(true)}>
+					Contactez-moi
+				</button>
+				<ContactModal 
+					open={modalOpen} 
+					close={() => setModalOpen(false)} 
+					title={`Contactez ${photographer.name}` }
+					photographer={photographer}>
+				</ContactModal>
+				<Image
+					className={styles.portrait}
+					src={`/assets/${photographer.portrait}`}
+					alt={`Portrait de ${photographer.name}`}
+					width={200}
+					height={200}
+				/>
 			</article>
 			<section>
 				<div>
@@ -61,27 +66,14 @@ export default function PhotographerMedia({photographer, imagesPhotographer}){
 						/>
 						) : pictures.video ? (
 						// Si c'est une vidéo
-						<video
-							className={styles.video_placeholder}
-							preload="none"
-						>
-							<source src={`/assets/${pictures.video}`} type="video/mp4" />
-						</video>
+						<div className={styles.video} >
+							<FontAwesomeIcon className={styles.icon} icon={faVideo} />
+						</div>
 						) : null}
-
-  <Modal open={mediaModalOpen} close={() => setMediaModalOpen(false)} title={`Contactez ${photographer.name}`}>
-	<MediaModal
-	  photographer={photographer}
-	  imagesPhotographer={imagesPhotographer}
-	  startIndex={mediaIndex}
-	  close={() => setMediaModalOpen(false)}
-	/>
-  </Modal>
-
-
 						<div className={styles.description}>
 							<h3 className={styles.title}>{pictures.title}</h3>
-							<div className={styles.likes_red}>
+							<Likes mediaId={pictures.id} initialLikes={pictures.likes} />
+							{/* <div className={styles.likes_red}>
 								<h3 className={styles.likes}>{pictures.likes}</h3>
 								<Image
 									className={styles.heart}
@@ -90,11 +82,18 @@ export default function PhotographerMedia({photographer, imagesPhotographer}){
 									width={24}
 									height={24}
 								/>
-							</div>
+							</div> */}
 						</div>
 					</div>
 					))}
-
+					<MediaModal
+						open={mediaModalOpen}
+						photographer={photographer}
+						imagesPhotographer={imagesPhotographer}
+						startIndex={mediaIndex}
+						close={() => setMediaModalOpen(false)}
+						title={`Contactez ${photographer.name}`}>
+					</MediaModal>
 				</div>
 			</section>
 		</>

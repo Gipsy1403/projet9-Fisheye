@@ -1,0 +1,11 @@
+.likes_red{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 15%;
+	
+}
+.likes{
+	color: var(--primary);
+	font-weight: 500;
+}

@@ -1,5 +1,10 @@
+
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
+
+config.autoAddCss = false;
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",

@@ -1,11 +1,13 @@
-
 import styles from "./ContactModal.module.css";
+// import styles from "./Modal.module.css"
 
-
-export default function ContactModal({photographer}) {
+export default function ContactModal({open, close, photographer}) {
+	if(!open)return null
 	return (
-		<>
-			<form className={styles.container_formulaire}>
+		
+		<div className={styles.superposition} role="presentation">
+			<div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="modal-title">
+				<form className={styles.container_formulaire}>
 				<h1>Contactez-moi <span>{photographer.name}</span></h1>
 				<h2>
 					<label className={styles.label} htmlFor="first_name">Prénom</label>
@@ -30,6 +32,8 @@ export default function ContactModal({photographer}) {
 				</h2>
 				<button className={styles.send}>Envoyer</button>
 			</form>
-		</>
+				<button className={styles.btn} onClick={close}>✖</button>
+			</div>
+		</div>
 	)
 }

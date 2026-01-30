@@ -49,6 +49,7 @@
 	flex-direction: column;
 	width: 350px;
 	height: 351px;
+	cursor: pointer;
 }
 .card .picture{
 	border-radius: 5px;
@@ -56,6 +57,19 @@
 	height: 100%;
 	width: 350px;
 	height: 300px;
+}
+.card .video{
+	background-color: #c4c4c4;
+	width: 350px;
+	height: 300px;
+	border-radius: 5px;
+	display: flex;
+	justify-content: center;
+	align-items: center; 
+}
+.card .video .icon{
+	font-size: 50px;
+
 }
 .description{
 	height: 51px;
@@ -71,7 +85,7 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
-.description .likes_red{
+/* .description .likes_red{
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -81,4 +95,4 @@
 .description .likes{
 	color: var(--primary);
 	font-weight: 500;
-}
+} */
