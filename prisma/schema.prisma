@@ -19,7 +19,7 @@ model Photographer {
 	tagline	String
 	price	Int
 	portrait		String
-    medias  Media[]
+    	medias  Media[]
 }
 
 model Media {

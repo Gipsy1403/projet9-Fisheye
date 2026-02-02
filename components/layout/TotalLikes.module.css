@@ -9,3 +9,28 @@
 	color: var(--primary);
 	font-weight: 500;
 }
+
+/* **************** */
+
+.container_total_likes{
+	position: fixed;
+	bottom: 10;
+	right: 10;
+	font-weight: 500;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	background-color: var(--secondary);
+	height: 80px;
+	border-radius: 5px;
+	width: 370px;
+}
+.total_likes{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.heart{
+	width: 21px;
+	height: 24px;
+}

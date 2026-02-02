@@ -15,13 +15,13 @@ export default function Likes({ mediaId, initialLikes }) {
 	setLikes(newLikes);
 
 	// await UpdateLike(mediaId, newLikes);
-	  try {
-    await UpdateLike(mediaId, newLikes);
-  } catch (err) {
-    console.error(err);
-    // On peut éventuellement revenir en arrière si la mise à jour échoue
-    setLikes(likes);
-  }
+	try {
+		await UpdateLike(mediaId, newLikes);
+	} catch (err) {
+		console.error(err);
+		// On peut éventuellement revenir en arrière si la mise à jour échoue
+		setLikes(likes);
+	}
 	};
 
 	return (

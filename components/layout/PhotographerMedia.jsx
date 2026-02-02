@@ -10,12 +10,20 @@ import MediaModal from "../ui/MediaModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo} from "@fortawesome/free-solid-svg-icons";
 import Likes from "./Likes";
+import TotalLikes from "./TotalLikes";
 
 
-export default function PhotographerMedia({photographer, imagesPhotographer}){
+export default function PhotographerMedia({photographer, imagesPhotographer,totalLikesPhotographer}){
 	const [modalOpen, setModalOpen]= useState(false)
 	const [mediaIndex, setMediaIndex]=useState(0)
 	const [mediaModalOpen, setMediaModalOpen]=useState(false)
+	const [allLikes, setAllLikes]=useState(totalLikesPhotographer)
+
+	const incrementAllLikes = () => {
+  		setAllLikes((prev) => prev + 1);
+	};
+
+
 
 	return (
 		<>
@@ -72,7 +80,7 @@ export default function PhotographerMedia({photographer, imagesPhotographer}){
 						) : null}
 						<div className={styles.description}>
 							<h3 className={styles.title}>{pictures.title}</h3>
-							<Likes mediaId={pictures.id} initialLikes={pictures.likes} />
+							<Likes mediaId={pictures.id} initialLikes={pictures.likes} onLike={incrementAllLikes} />
 							{/* <div className={styles.likes_red}>
 								<h3 className={styles.likes}>{pictures.likes}</h3>
 								<Image
@@ -94,6 +102,7 @@ export default function PhotographerMedia({photographer, imagesPhotographer}){
 						close={() => setMediaModalOpen(false)}
 						title={`Contactez ${photographer.name}`}>
 					</MediaModal>
+					<TotalLikes totalLikesPhotographer={allLikes} photographer={photographer}/>
 				</div>
 			</section>
 		</>

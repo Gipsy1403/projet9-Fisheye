@@ -19,3 +19,12 @@ export const updateNumberOfLikes = (mediaId, newNumberOfLikes) =>
     where: { id: mediaId },
     data: { likes: newNumberOfLikes },
   });
+
+export const getTotalLikesForPhotographer = (photographerId) =>
+  prisma.media.aggregate({
+    where: { photographerId },
+    _sum: { likes: true},
+  });
+
+
+

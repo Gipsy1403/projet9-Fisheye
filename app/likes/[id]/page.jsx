@@ -1,8 +1,3 @@
-// import { updateNumberOfLikes } from "../../lib/prisma-db";
-
-// export default async function UpdateLike(mediaId, newNumberOfLikes) {
-// 	await updateNumberOfLikes(mediaId, newNumberOfLikes)
-// }
 
 export default async function UpdateLike(mediaId, newLikes) {
   const res = await fetch('/api/likes', {
