@@ -15,6 +15,19 @@ import TotalLikes from "./TotalLikes";
 
 export default function PhotographerMedia({photographer, imagesPhotographer,totalLikesPhotographer}){
 	const [modalOpen, setModalOpen]= useState(false)
+	const [sortBy,setSortBy]=useState("")
+
+	const sortedMedias = [...imagesPhotographer].sort((a, b) => {
+		if (sortBy === "title") {
+			return a.title.localeCompare(b.title); // trie alphabétique
+		} else if (sortBy === "date") {
+			return new Date(a.date) - new Date(b.date); // trie par date croissante
+		} else if (sortBy === "likes") {
+			return b.likes-a.likes
+		}
+		return 0;
+	});
+
 	const [mediaIndex, setMediaIndex]=useState(0)
 	const [mediaModalOpen, setMediaModalOpen]=useState(false)
 	const [allLikes, setAllLikes]=useState(totalLikesPhotographer)
@@ -52,12 +65,21 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 				/>
 			</article>
 			<section>
-				<div>
-					<h4>Trier par</h4>
-					tag
+				<div className={styles.order_by} >
+					<label className={styles.label_sort} htmlFor="order_by">Trier par</label>
+					<select
+						className={styles.select}
+						id="order_by"
+						value={sortBy}
+						onChange={(e) => setSortBy(e.target.value)}
+					>
+						<option className={styles.option}value="likes" >Popularité</option>
+						<option className={styles.option} value="title">Titre</option>
+						<option className={styles.option} value="date">Date</option>
+					</select>
 				</div>
 				<div className={styles.container_media}>
-					{imagesPhotographer.map((pictures,index)=>(
+					{sortedMedias.map((pictures,index)=>(
 					<div className={styles.card} key={pictures.id}
 					onClick={()=>{
 						setMediaIndex(index);
