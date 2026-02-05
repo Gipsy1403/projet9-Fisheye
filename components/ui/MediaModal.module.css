@@ -35,7 +35,7 @@
 }
 
 /* ****************** MODAL ******************* */
-.superposition {
+.superposition{
   position: fixed;
   top: 0;
   left: 0;
@@ -48,16 +48,18 @@
   background-color: var(--white);
 
 }
-.modal {
+.modal{
   border-radius: 5px;
   height: 90%;
   overflow-y: auto;
+position: relative;
+
 }
 
 .btn{
-	position: fixed;
-	top: 3rem;
-  	right:5%;
+	position: absolute;
+	top: 2rem;
+  	right:2rem;
 	font-size:50px;
 	color: var(--primary);
 	z-index: 90;

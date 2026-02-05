@@ -7,8 +7,11 @@
 }
 .card{
 	margin: auto;
-	cursor: pointer;
 	text-align: center;
+}
+.focus:focus{
+	cursor: pointer;
+
 }
 .name, .city{
 	color: var(--secondary);

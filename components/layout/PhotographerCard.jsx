@@ -12,19 +12,19 @@ export default async function PhotographerCard(){
 				<ul className={styles.photographers}>
 					{allPhotographers.map((photographer)=>(
 						<li className={styles.card} key={photographer.id}>
-							<Link href={`/photographe/${photographer.id}`}>
-							<Image
-								className={styles.portrait}
-								src={`/assets/${photographer.portrait}`}
-								alt={`Portrait de ${photographer.name}`}
-								width={200}
-								height={200}
-							/>
-							<h2 className={styles.name}>{photographer.name}</h2>
+							<Link className={styles.focus} href={`/photographe/${photographer.id}`}>
+								<Image
+									className={styles.portrait}
+									src={`/assets/${photographer.portrait}`}
+									alt={photographer.name}
+									width={200}
+									height={200}
+								/>
+								<h2 className={styles.name}>{photographer.name}</h2>
+							</Link>
 							<p className={styles.city}>{photographer.city}, {photographer.country}</p>
 							<h5 className={styles.tagline}>{photographer.tagline}</h5>
 							<h6 className={styles.price}>{photographer.price} €/jour</h6>
-							</Link>
 				
 				
 						</li>

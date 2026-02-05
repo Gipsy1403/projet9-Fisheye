@@ -10,7 +10,7 @@ export default function HeaderHome(){
 				<Image
 					className="logo"
 					src={"/assets/images/Logo.svg"}
-					alt="Logo Sportsee"
+					alt="Fisheye Home page"
 					width={200}
 					height={50}
 					/>

@@ -59,7 +59,7 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 				<Image
 					className={styles.portrait}
 					src={`/assets/${photographer.portrait}`}
-					alt={`Portrait de ${photographer.name}`}
+					alt={photographer.name}
 					width={200}
 					height={200}
 				/>
@@ -73,24 +73,31 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 						value={sortBy}
 						onChange={(e) => setSortBy(e.target.value)}
 					>
-						<option className={styles.option}value="likes" >Popularité</option>
-						<option className={styles.option} value="title">Titre</option>
-						<option className={styles.option} value="date">Date</option>
+						<option className={styles.options}value="likes" >Popularité</option>
+						<option className={styles.options} value="title">Titre</option>
+						<option className={styles.options} value="date">Date</option>
 					</select>
 				</div>
 				<div className={styles.container_media}>
 					{sortedMedias.map((pictures,index)=>(
-					<div className={styles.card} key={pictures.id}
+					<div className={styles.card} key={pictures.id} role="button" tabIndex={0}
 					onClick={()=>{
 						setMediaIndex(index);
 						setMediaModalOpen(true);
+					}}
+					onKeyDown={(e) => {
+						if (e.key === "Enter" || e.key === " ") {
+							e.preventDefault();
+							setMediaIndex(index);
+							setMediaModalOpen(true);
+						}
 					}}>
 						{pictures.image ? (
 						// Si c'est une image
 						<Image
 							className={styles.picture}
 							src={`/assets/${pictures.image}`}
-							alt={`Portrait de ${pictures.title}`}
+							alt={pictures.title}
 							width={350}
 							height={300}
 						/>
@@ -103,16 +110,6 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 						<div className={styles.description}>
 							<h3 className={styles.title}>{pictures.title}</h3>
 							<Likes mediaId={pictures.id} initialLikes={pictures.likes} onLike={incrementAllLikes} />
-							{/* <div className={styles.likes_red}>
-								<h3 className={styles.likes}>{pictures.likes}</h3>
-								<Image
-									className={styles.heart}
-									src={`/assets/images/favorite.png`}
-									alt={`Picto like`}
-									width={24}
-									height={24}
-								/>
-							</div> */}
 						</div>
 					</div>
 					))}

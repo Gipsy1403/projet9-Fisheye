@@ -27,7 +27,7 @@
 	cursor: pointer;
 }
 
-.contact_me:hover{
+.contact_me:hover, .contact_me:focus{
 	background-color: #db8876;
 	color: var(--foreground);
 }
@@ -39,7 +39,7 @@
 .order_by{
 	margin-bottom: 2rem;
 }
-.label_sort, .select{
+.label_sort, .select, .options{
 	font-size: 18px;
 	font-weight: 700;
 }
@@ -49,12 +49,15 @@
 	color: var(--white);
 	width: 170px;
 	height: 69px;
-	padding: 0 1rem;
-	/* border-bottom: 1px solid var(--white); */
+	padding: 0.5rem;
 	border-radius: 5px;
-	outline: none;
+	outline: none; 
 }
-.option{
+.select:focus-within{
+	outline: 2px solid black;
+}
+.options{
+	padding: 500px;
 }
 .container_media{
 	display: flex;
@@ -77,6 +80,10 @@
 	height: 100%;
 	width: 350px;
 	height: 300px;
+}
+.card:focus-visible{
+	outline: 2px solid var(--primary);
+	padding: 0.3rem;
 }
 .card .video{
 	background-color: #c4c4c4;

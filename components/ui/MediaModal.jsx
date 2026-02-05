@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import styles from "./MediaModal.module.css";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function MediaModal({photographer,imagesPhotographer, startIndex, close, open}) {
 	const [index, setIndex]= useState(startIndex);
@@ -36,10 +37,32 @@ export default function MediaModal({photographer,imagesPhotographer, startIndex,
 							<source src={`/assets/${pictures.video}`} type="video/mp4" />
 						</video>
 					) : null}	
-					<button className={styles.previous} onClick={previousImage}>{"<"}</button>
-					<button className={styles.next} onClick={nextImage}>{">"}</button>
+					<Link
+						href="#"
+						className={styles.previous}
+						aria-label="Previous image"
+						onClick={(e) => {
+						e.preventDefault();
+						previousImage();
+						}}
+						>
+						{"<"}
+					</Link>
+
+					<Link
+						href="#"
+						className={styles.next}
+						aria-label="Next image"
+						onClick={(e) => {
+						e.preventDefault();
+						nextImage();
+						}}
+						>
+						{">"}
+					</Link>
+					<button aria-label="close dialog" className={styles.btn} onClick={close}>✖</button>
+
 				</div>
-				<button className={styles.btn} onClick={close}>✖</button>
 			</div>
 		</div>
 	)

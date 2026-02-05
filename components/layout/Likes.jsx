@@ -30,7 +30,7 @@ export default function Likes({ mediaId, initialLikes }) {
 			<Image
 				className={styles.heart}
 				src={`/assets/images/favorite.png`}
-				alt={`Picto like`}
+				alt={`Likes`}
 				width={24}
 				height={24}
 				onClick={onLikeClick}
