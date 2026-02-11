@@ -9,9 +9,17 @@
 	margin: auto;
 	text-align: center;
 }
-.focus:focus{
+.focus {
+	display: inline-block;
+	text-decoration: none;
+	transition: transform 0.2s ease;
+}
+.focus:focus, .focus:hover{
+	transform: scale(1.1);
+	font-weight: bold;
+	outline: 2px solid var(--primary); 
+	outline-offset: 4px;
 	cursor: pointer;
-
 }
 .name{
 	font-size: 36px;
