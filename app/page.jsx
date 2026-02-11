@@ -8,9 +8,9 @@ export default function Home() {
 		<header>
 			<HeaderHome/>
 		</header>
-		<main>
+		<section>
 			<PhotographerCard/>
-		</main>
+		</section>
 	</main>
 
 

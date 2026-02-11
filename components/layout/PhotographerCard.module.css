@@ -13,11 +13,18 @@
 	cursor: pointer;
 
 }
+.name{
+	font-size: 36px;
+}
+.tagline{
+	font-size: 10px;
+}
 .name, .city{
 	color: var(--secondary);
 }
 .price{
 	color: var(--grey);
+	font-size: 9px;
 }
 .portrait{
 	border-radius: 50%;
