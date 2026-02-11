@@ -20,7 +20,7 @@ body {
 	background: var(--white);
 	color: var(--foreground);
 	font-family: var(--font-dm-sans);
-	min-width: 1240px;
+	min-width: 1024px;
 	margin: 0 4rem;
 
 }

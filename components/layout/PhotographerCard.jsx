@@ -16,7 +16,7 @@ export default async function PhotographerCard(){
 								<Image
 									className={styles.portrait}
 									src={`/assets/${photographer.portrait}`}
-									alt={photographer.name}
+									alt={`Photographe ${photographer.name}`}
 									width={200}
 									height={200}
 								/>

@@ -32,14 +32,14 @@ export default function ContactModal({ open, close, photographer }) {
 			className={styles.modal}
 			role="dialog"
 			aria-modal="true"
-			aria-labelledby={`Contact me ${photographer.name}`}
+			aria-labelledby="contact-modal-title"
 		>
 		<form className={styles.container_formulaire} onSubmit={handleSubmit}>
-			<h1>
+			<h1 className={styles.title} id="contact-modal-title">
 				Contactez-moi <span>{photographer.name}</span>
 			</h1>
 			<div className={styles.fields}>
-				<h2>
+				<div>
 					<label className={styles.label} htmlFor="first_name">
 						Prénom
 					</label>
@@ -53,9 +53,9 @@ export default function ContactModal({ open, close, photographer }) {
 						onChange={(e) => setFirstName(e.target.value)}
 						required
 				/>
-				</h2>
+				</div>
 
-				<h2>
+				<div>
 					<label className={styles.label} htmlFor="last_name">
 						Nom
 					</label>
@@ -69,9 +69,9 @@ export default function ContactModal({ open, close, photographer }) {
 						onChange={(e) => setLastName(e.target.value)}
 						required
 					/>
-				</h2>
+				</div>
 
-				<h2>
+				<div>
 					<label className={styles.label} htmlFor="email">
 						Email
 					</label>
@@ -85,9 +85,9 @@ export default function ContactModal({ open, close, photographer }) {
 						onChange={(e) => setEmail(e.target.value)}
 						required
 					/>
-				</h2>
+				</div>
 
-				<h2>
+				<div>
 					<label className={styles.label} htmlFor="your_message">
 						Votre message
 					</label>
@@ -100,7 +100,7 @@ export default function ContactModal({ open, close, photographer }) {
 						onChange={(e) => setMessage(e.target.value)}
 						required
 					></textarea>
-				</h2>
+				</div>
 			</div>
 			<button className={styles.send} type="submit">
 				Envoyer
@@ -111,6 +111,7 @@ export default function ContactModal({ open, close, photographer }) {
 			aria-labelledby="Close Contact form"
 			className={styles.btn}
 			onClick={close}
+			aria-label="Fermer le formulaire de contact"
 		>
 			✖
 		</button>

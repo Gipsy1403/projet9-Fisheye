@@ -5,17 +5,16 @@ import styles from "./Header.module.css"
 
 export default function HeaderHome(){
 	return(
-		<header className={styles.header}>
+		<header className={styles.header} aria-label="Logo Fisheye, page Accueil">
 			<Link href="/">
 				<Image
-					className="logo"
 					src={"/assets/images/Logo.svg"}
 					alt="Fisheye Home page"
 					width={200}
 					height={50}
 					/>
 			</Link>
-			<nav className={styles.bar_navigation}>
+			<nav className={styles.bar_navigation}							>
 				<ul>
 					<li>Nos photographes</li>
 				</ul>

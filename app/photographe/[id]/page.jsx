@@ -2,7 +2,6 @@
 import {getPhotographer, getAllMediasForPhotographer, getTotalLikesForPhotographer} from '../../lib/prisma-db';
 import PhotographerMedia from '../../../components/layout/PhotographerMedia';
 import MediaModal from '../../../components/ui/MediaModal';
-import TotalLikes from '../../../components/layout/TotalLikes';
 
 export default async function PhotographerPage({params}){
 	const idParams = await params;
@@ -18,7 +17,6 @@ export default async function PhotographerPage({params}){
 		<>
 			<PhotographerMedia photographer={photographer} imagesPhotographer={imagesPhotographer} totalLikesPhotographer={totalLikesPhotographer} />
 			<MediaModal photographer={photographer} imagesPhotographer={imagesPhotographer} />
-			<TotalLikes totalLikesPhotographer={totalLikesPhotographer} photographer={photographer}/>
 		</>
 	)
 }

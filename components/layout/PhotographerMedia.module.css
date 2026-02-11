@@ -65,6 +65,7 @@
 	justify-content: space-between;
 	width: 100%;
 	gap: 4rem;
+	margin-bottom: 6rem;
 }
 .card{
 	display: flex;

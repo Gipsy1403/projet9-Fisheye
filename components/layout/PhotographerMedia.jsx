@@ -14,15 +14,15 @@ import TotalLikes from "./TotalLikes";
 
 
 export default function PhotographerMedia({photographer, imagesPhotographer,totalLikesPhotographer}){
-	const [modalOpen, setModalOpen]= useState(false)
+	const [modalOpen,setModalOpen]=useState(false)
 	const [sortBy,setSortBy]=useState("")
 
-	const sortedMedias = [...imagesPhotographer].sort((a, b) => {
-		if (sortBy === "title") {
-			return a.title.localeCompare(b.title); // trie alphabétique
-		} else if (sortBy === "date") {
-			return new Date(a.date) - new Date(b.date); // trie par date croissante
-		} else if (sortBy === "likes") {
+	const sortedMedias=[...imagesPhotographer].sort((a, b) => {
+		if (sortBy==="title") {
+			return a.title.localeCompare(b.title); 
+		} else if (sortBy==="date") {
+			return new Date(a.date) - new Date(b.date); 
+		} else if (sortBy==="likes") {
 			return b.likes-a.likes
 		}
 		return 0;
@@ -35,6 +35,7 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 	const incrementAllLikes = () => {
   		setAllLikes((prev) => prev + 1);
 	};
+
 
 
 
@@ -100,6 +101,7 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 							alt={pictures.title}
 							width={350}
 							height={300}
+							priority
 						/>
 						) : pictures.video ? (
 						// Si c'est une vidéo
@@ -116,10 +118,9 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 					<MediaModal
 						open={mediaModalOpen}
 						photographer={photographer}
-						imagesPhotographer={imagesPhotographer}
+						imagesPhotographer={sortedMedias}
 						startIndex={mediaIndex}
-						close={() => setMediaModalOpen(false)}
-						title={`Contactez ${photographer.name}`}>
+						close={() => setMediaModalOpen(false)}>
 					</MediaModal>
 					<TotalLikes totalLikesPhotographer={allLikes} photographer={photographer}/>
 				</div>

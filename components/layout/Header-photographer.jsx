@@ -8,7 +8,6 @@ export default function HeaderPhotographer(){
 		<header className={styles.header}>
 			<Link href="/">
 				<Image
-					className="logo"
 					src={"/assets/images/Logo.svg"}
 					alt="Fisheye Home page"
 					width={200}
