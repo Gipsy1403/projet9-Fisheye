@@ -9,19 +9,36 @@ import Link from "next/link";
 export default function MediaModal({ photographer, imagesPhotographer, startIndex, close, open }) {
 	// Initialise un état pour stocker l’index du média actuellement affiché
 	const [index, setIndex] = useState(startIndex);
-	// Met à jour l’index lorsque la propriété startIndex change
+
+	// Initialise un état pour afficher un loading le tant que le media se charge
+	const [loading, setLoading] = useState(true);
+
+	// Exécute un effet secondaire à chaque changement de startIndex
 	useEffect(() => {
-		// Synchronise l’index interne avec la nouvelle valeur reçue en propriété
-		setIndex(startIndex);
-	}, [startIndex]);
+		// Crée un timer pour exécuter le code après le rendu initial
+		const timer = setTimeout(() => {
+			// Met à jour l'index du média avec la nouvelle valeur startIndex
+			setIndex(startIndex);
+			// Active le chargement pour la nouvelle image
+			setLoading(true); 
+		}, 0);
+		// Nettoie le timer lorsque le composant est démonté ou avant le prochain effet
+		return () => clearTimeout(timer);
+	// Déclenche l'effet uniquement lorsque startIndex change
+	}, [startIndex]); 
+
+
 	// Définit une fonction permettant d’afficher le média précédent avec un effet circulaire
 	const previousImage = () =>
 		setIndex((index - 1 + imagesPhotographer.length) % imagesPhotographer.length);
+
 	// Définit une fonction permettant d’afficher le média suivant avec un effet circulaire
 	const nextImage = () =>
 		setIndex((index + 1) % imagesPhotographer.length);
+
 	// Récupère le média correspondant à l’index actuel
 	const pictures = imagesPhotographer[index];
+
 	// Retourne null si aucun média n’est trouvé à l’index courant
 	if (!pictures) return null;
 	// Retourne null si la modale n’est pas ouverte afin de ne rien afficher
@@ -32,6 +49,11 @@ export default function MediaModal({ photographer, imagesPhotographer, startInde
 		<div className={styles.superposition} role="presentation">
 			<div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="modal-title">
 				<div className={styles.container_view}>
+					{loading && (
+						<div className={styles.spinnerOverlay}>
+							<div className={styles.spinner}></div>
+						</div>
+					)}
 					{pictures.image ? (
 						<Image
 							className={styles.photo}
@@ -39,9 +61,10 @@ export default function MediaModal({ photographer, imagesPhotographer, startInde
 							alt={pictures.title}
 							width={1050}
 							height={900}
+							onLoadingComplete={()=> setLoading(false)}
 						/>
 					) : pictures.video ? (
-						<video className={styles.video} controls>
+						<video className={styles.video} controls onLoadedData={() => setLoading(false)}>
 							<source src={`/assets/${pictures.video}`} type="video/mp4" />
 						</video>
 					) : null}	
