@@ -4,7 +4,7 @@
 import styles from "./PhotographerMedia.module.css";
 import Image from 'next/image';
 import HeaderPhotographer from "./Header-photographer";
-import { useState } from "react";
+import { useState, useId } from "react";
 import ContactModal from "../ui/ContactModal";
 import MediaModal from "../ui/MediaModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,6 +17,7 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 	const [modalOpen,setModalOpen]=useState(false);
 	const [sortBy,setSortBy]=useState("likes");
 	const [isOpen, setIsOpen] = useState(false);
+	const sortLabelId = useId();
 
 
 	const sortedMedias=[...imagesPhotographer].sort((a, b) => {
@@ -77,13 +78,13 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 					<div className={styles.order_by}>
 						<p id="sortLabel" className={styles.label_sort}>Trier par</p>
 						<div className={styles.customSelect}>
-						{/* Bouton principal */}
+							{/* Bouton principal */}
 							<button
 								className={styles.selected}
 								onClick={() => setIsOpen(!isOpen)}
 								aria-haspopup="listbox"
 								aria-expanded={isOpen}
-								aria-labelledby="sortLabel"
+								aria-labelledby={sortLabelId}
 							>
 								{sortOptions.find(option => option.value === sortBy)?.label}
 								<FontAwesomeIcon
