@@ -11,11 +11,16 @@
 
 .name{
 	color: var(--secondary);
+	font-size: 64px;
 }
 .city{
 	color: var(--primary);
+	font-size: 24px;
 }
+.tagline{
+	font-size: 18px;
 
+}
 .contact_me{
 	background-color: var(--primary);
 	color: var(--white);

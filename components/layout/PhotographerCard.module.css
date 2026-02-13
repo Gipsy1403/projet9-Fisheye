@@ -23,12 +23,14 @@
 }
 .name{
 	font-size: 36px;
+	color: var(--secondary);
+
 }
 .tagline{
 	font-size: 10px;
 }
-.name, .city{
-	color: var(--secondary);
+.city{
+	color: var(--primary);
 }
 .price{
 	color: var(--grey);
