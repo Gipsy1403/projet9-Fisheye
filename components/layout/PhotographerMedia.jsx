@@ -1,4 +1,3 @@
-
 "use client";
 
 import styles from "./PhotographerMedia.module.css";
@@ -12,45 +11,66 @@ import { faVideo, faChevronDown} from "@fortawesome/free-solid-svg-icons";
 import Likes from "./Likes";
 import TotalLikes from "./TotalLikes";
 
+// Déclare le composant PhotographerMedia et récupère les propriétés photographer, imagesPhotographer et totalLikesPhotographer
+export default function PhotographerMedia({photographer, imagesPhotographer, totalLikesPhotographer}){
 
-export default function PhotographerMedia({photographer, imagesPhotographer,totalLikesPhotographer}){
-	const [modalOpen,setModalOpen]=useState(false);
-	const [sortBy,setSortBy]=useState("likes");
+	// Initialise un état pour gérer l'ouverture ou la fermeture d'une modale
+	const [modalOpen, setModalOpen] = useState(false);
+
+	// Initialise un état pour gérer le critère de tri sélectionné
+	const [sortBy, setSortBy] = useState("likes");
+
+	// Initialise un état pour gérer l'ouverture d'un menu déroulant
 	const [isOpen, setIsOpen] = useState(false);
+
+	// Génère un identifiant unique pour l'accessibilité (aria-labelledby par exemple)
 	const sortLabelId = useId();
 
-
-	const sortedMedias=[...imagesPhotographer].sort((a, b) => {
-		if (sortBy==="title") {
+	// Crée une copie du tableau imagesPhotographer puis applique un tri selon le critère sélectionné
+	const sortedMedias = [...imagesPhotographer].sort((a, b) => {
+		// Si le tri sélectionné est "title", effectue un tri alphabétique
+		if (sortBy === "title") {
 			return a.title.localeCompare(b.title); 
-		} else if (sortBy==="date") {
-			return new Date(a.date) - new Date(b.date); 
-		} else if (sortBy==="likes") {
-			return b.likes-a.likes
 		}
+		// Si le tri sélectionné est "date", effectue un tri chronologique
+		else if (sortBy === "date") {
+			return new Date(a.date) - new Date(b.date); 
+		}
+		// Si le tri sélectionné est "likes", effectue un tri décroissant selon le nombre de likes
+		else if (sortBy === "likes") {
+			return b.likes - a.likes
+		}
+		// Retourne 0 si aucun critère ne correspond
 		return 0;
 	});
 
-	const [mediaIndex, setMediaIndex]=useState(0)
-	const [mediaModalOpen, setMediaModalOpen]=useState(false)
-	const [allLikes, setAllLikes]=useState(totalLikesPhotographer)
+	// Initialise un état pour stocker l'index du média actuellement sélectionné
+	const [mediaIndex, setMediaIndex] = useState(0)
 
+	// Initialise un état pour gérer l'ouverture ou la fermeture de la modale média
+	const [mediaModalOpen, setMediaModalOpen] = useState(false)
+
+	// Initialise un état pour stocker le total global des likes du photographe
+	const [allLikes, setAllLikes] = useState(totalLikesPhotographer)
+
+	// Déclare une fonction qui incrémente le total global des likes
 	const incrementAllLikes = () => {
+  		// Met à jour l'état en ajoutant 1 à la valeur précédente
   		setAllLikes((prev) => prev + 1);
 	};
+
+	// 	Définit les différentes options de tri disponibles
 	const sortOptions = [
 		{ value: "likes", label: "Popularité" },
 		{ value: "title", label: "Titre" },
 		{ value: "date", label: "Date" },
 	];
 
-
-
-
 	return (
 		<>
 			<HeaderPhotographer />
 			<main>
+				{/* Encart du photographe */}
 				<article className={styles.photographers}>
 					<section>
 						<h1 className={styles.name}>{photographer.name}</h1>
@@ -60,12 +80,14 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 					<button className={styles.contact_me} onClick={() => setModalOpen(true)}>
 						Contactez-moi
 					</button>
+					{/* Module de la modale pour contacter le photographe */}
 					<ContactModal
 						open={modalOpen}
 						close={() => setModalOpen(false)}
 						title={`Contactez ${photographer.name}` }
 						photographer={photographer}>
 					</ContactModal>
+					{/* Avatar du photographe */}
 					<Image
 						className={styles.portrait}
 						src={`/assets/${photographer.portrait}`}
@@ -75,10 +97,10 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 					/>
 				</article>
 				<section>
+					{/* Menu déroulant pour le tri des photos */}
 					<div className={styles.order_by}>
 						<p id={sortLabelId} className={styles.label_sort}>Trier par</p>
 						<div className={styles.customSelect}>
-							{/* Bouton principal */}
 							<button
 								className={styles.selected}
 								onClick={() => setIsOpen(!isOpen)}
@@ -86,6 +108,7 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 								aria-expanded={isOpen}
 								aria-labelledby={sortLabelId}
 							>
+								{/* Affiche le label correspondant à la valeur sélectionnée */}
 								{sortOptions.find(option => option.value === sortBy)?.label}
 								<FontAwesomeIcon
 								icon={faChevronDown}
@@ -94,7 +117,7 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 							</button>
 							{/* Label pour les lecteurs d’écran */}
 							<p id="sortLabel" className="sr-only">Trier par</p>
-							{/* Liste déroulante */}
+							{/* Affiche la Liste déroulante si isOpen = true */}
 							{isOpen && (
 							<ul className={styles.dropdown}
 								role="listbox"
@@ -102,9 +125,10 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 								tabIndex={-1}
 							>
 								{sortOptions
-								// empêche doublon
+								// supprime l'option atuellement sélectionnée
 								.filter(option => option.value !== sortBy) 
 								.map(option => (
+									// génère chaque option restante
 									<li
 										key={option.value}
 										role="option"
@@ -112,15 +136,17 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 										aria-selected={option.value === sortBy}
 										tabIndex={0}
 										onClick={() => {
-										setSortBy(option.value);
-										setIsOpen(false);
+											// change le critère de tri au clic
+											setSortBy(option.value);
+											setIsOpen(false);
 										}}
+										// permet la sélection au clavier entrée ou espace
 										onKeyDown={(e) => {
-										if (e.key === "Enter" || e.key === " ") {
-										e.preventDefault();
-										setSortBy(option.value);
-										setIsOpen(false);
-										}
+											if (e.key === "Enter" || e.key === " ") {
+											e.preventDefault();
+											setSortBy(option.value);
+											setIsOpen(false);
+											}
 										}}
 									>
 									{option.label}
@@ -130,22 +156,26 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 							)}
 						</div>
 					</div>
+					{/* container des médias */}
 					<div className={styles.container_media}>
+						{/* parcourt la liste triée des médias */}
 						{sortedMedias.map((pictures,index)=>(
 						<div className={styles.card} key={pictures.id} role="button" tabIndex={0}
 						onClick={()=>{
+							// ouvre la modal média au clic
 							setMediaIndex(index);
 							setMediaModalOpen(true);
 						}}
 						onKeyDown={(e) => {
+							// ouvre la modal média au clavier (entrée ou espace)
 							if (e.key === "Enter" || e.key === " ") {
 								e.preventDefault();
 								setMediaIndex(index);
 								setMediaModalOpen(true);
 							}
 						}}>
+							{/* Si c'est une image */}
 							{pictures.image ? (
-							// Si c'est une image
 							<Image
 								className={styles.picture}
 								src={`/assets/${pictures.image}`}
@@ -154,18 +184,20 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 								height={300}
 								priority
 							/>
-							) : pictures.video ? (
 							// Si c'est une vidéo
+							) : pictures.video ? (
 							<div className={styles.video} >
 								<FontAwesomeIcon className={styles.icon} icon={faVideo} />
 							</div>
 							) : null}
+							{/* conteneur de la description du média */}
 							<div className={styles.description}>
 								<p className={styles.title}>{pictures.title}</p>
 								<Likes mediaId={pictures.id} initialLikes={pictures.likes} onLike={incrementAllLikes} />
 							</div>
 						</div>
 						))}
+						{/* Modale pour afficher les médias en grand */}
 						<MediaModal
 							open={mediaModalOpen}
 							photographer={photographer}
@@ -173,6 +205,7 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 							startIndex={mediaIndex}
 							close={() => setMediaModalOpen(false)}>
 						</MediaModal>
+						{/* Affiche le total des likes du photographe */}
 						<TotalLikes totalLikesPhotographer={allLikes} photographer={photographer}/>
 					</div>
 				</section>

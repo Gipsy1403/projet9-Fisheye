@@ -2,32 +2,33 @@
 import { useState } from "react";
 import styles from "./ContactModal.module.css";
 
+// Déclare le composant ContactModal et récupère les propriétés open, close et photographer
 export default function ContactModal({ open, close, photographer }) {
-
-	const [firstName,setFirstName]=useState("");
-	const [lastName,setLastName]=useState("");
-	const [email,setEmail]=useState("");
-	const [message,setMessage]=useState("");
-
+	// Initialise un état pour stocker le prénom saisi dans le formulaire
+	const [firstName, setFirstName] = useState("");
+	// Initialise un état pour stocker le nom saisi dans le formulaire
+	const [lastName, setLastName] = useState("");
+	// Initialise un état pour stocker l’email saisi dans le formulaire
+	const [email, setEmail] = useState("");
+	// Initialise un état pour stocker le message saisi dans le formulaire
+	const [message, setMessage] = useState("");
+	// Retourne null si la modale n’est pas ouverte afin de ne rien afficher
 	if (!open) return null;
-
-	// Fonction pour envoyer le formulaire
+	// Fonction pour envoyer le formulaire dans la console
 	const handleSubmit = (e) => {
-	e.preventDefault(); 
+		e.preventDefault(); 
+		console.log("Prénom :", firstName);
+		console.log("Nom :", lastName);
+		console.log("Email :", email);
+		console.log("Message :", message);
+		// réinitialise les champs après envoi
+		setFirstName("");
+		setLastName("");
+		setEmail("");
+		setMessage("");
+	};
 
-	console.log("Prénom :", firstName);
-	console.log("Nom :", lastName);
-	console.log("Email :", email);
-	console.log("Message :", message);
-
-	// reset des champs après envoi
-	setFirstName("");
-	setLastName("");
-	setEmail("");
-	setMessage("");
-};
-
-  return (
+ 	return (
 	<div className={styles.superposition} role="presentation">
 		<div
 			className={styles.modal}

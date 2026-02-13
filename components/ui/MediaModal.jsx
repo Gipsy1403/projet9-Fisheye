@@ -5,20 +5,28 @@ import styles from "./MediaModal.module.css";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function MediaModal({photographer,imagesPhotographer, startIndex, close, open}) {
-	const [index, setIndex]= useState(startIndex);
-
+// Déclare le composant MediaModal et récupère les propriétés photographer, imagesPhotographer, startIndex, close et open
+export default function MediaModal({ photographer, imagesPhotographer, startIndex, close, open }) {
+	// Initialise un état pour stocker l’index du média actuellement affiché
+	const [index, setIndex] = useState(startIndex);
+	// Met à jour l’index lorsque la propriété startIndex change
 	useEffect(() => {
+		// Synchronise l’index interne avec la nouvelle valeur reçue en propriété
 		setIndex(startIndex);
 	}, [startIndex]);
-
-	const previousImage=()=>setIndex((index -1 + imagesPhotographer.length) % imagesPhotographer.length);
-	const nextImage=()=>setIndex((index+1) % imagesPhotographer.length);
-
-	const pictures=imagesPhotographer[index];
+	// Définit une fonction permettant d’afficher le média précédent avec un effet circulaire
+	const previousImage = () =>
+		setIndex((index - 1 + imagesPhotographer.length) % imagesPhotographer.length);
+	// Définit une fonction permettant d’afficher le média suivant avec un effet circulaire
+	const nextImage = () =>
+		setIndex((index + 1) % imagesPhotographer.length);
+	// Récupère le média correspondant à l’index actuel
+	const pictures = imagesPhotographer[index];
+	// Retourne null si aucun média n’est trouvé à l’index courant
 	if (!pictures) return null;
-
+	// Retourne null si la modale n’est pas ouverte afin de ne rien afficher
 	if (!open) return null;
+
 
 	return (
 		<div className={styles.superposition} role="presentation">
