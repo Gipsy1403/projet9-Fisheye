@@ -27,7 +27,7 @@ export default function Likes({ mediaId, initialLikes, onLike }) {
 
 	return (
 		<div className={styles.likes_red}>
-			<h3 className={styles.likes}>{likes}</h3>
+			<p className={styles.likes}>{likes}</p>
 			<Image
 				src={`/assets/images/favorite.png`}
 				alt={`Likes`}

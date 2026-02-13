@@ -7,7 +7,7 @@ export default function TotalLikes({photographer, totalLikesPhotographer}) {
 
 		<section className={styles.container_total_likes}>
 			<div className={styles.total_likes}>
-				<h3>{totalLikesPhotographer}</h3>
+				<p>{totalLikesPhotographer}</p>
 				<Image
 					src={`/assets/images/favorite-black.png`}
 					alt={`Picto like`}
@@ -15,7 +15,7 @@ export default function TotalLikes({photographer, totalLikesPhotographer}) {
 					height={24}
 				/>
 			</div>
-			<h3 className={styles.price}>{photographer?.price} €/jour</h3>
+			<p className={styles.price}>{photographer?.price} €/jour</p>
 		</section>
 
 	)

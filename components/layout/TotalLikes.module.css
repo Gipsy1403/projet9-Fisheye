@@ -8,6 +8,7 @@
 .likes{
 	color: var(--primary);
 	font-weight: 500;
+	font-size: 24px;
 }
 
 /* **************** */
@@ -29,4 +30,8 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+.total_likes p, .price{
+	font-size: 24px;
+	font-weight: 500;
 }

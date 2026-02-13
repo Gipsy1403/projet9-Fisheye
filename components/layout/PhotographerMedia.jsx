@@ -111,7 +111,7 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 							</div>
 							) : null}
 							<div className={styles.description}>
-								<h3 className={styles.title}>{pictures.title}</h3>
+								<p className={styles.title}>{pictures.title}</p>
 								<Likes mediaId={pictures.id} initialLikes={pictures.likes} onLike={incrementAllLikes} />
 							</div>
 						</div>

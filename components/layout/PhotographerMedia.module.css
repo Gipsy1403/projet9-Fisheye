@@ -83,7 +83,6 @@
 .card .picture{
 	border-radius: 5px;
 	object-fit: cover;
-	height: 100%;
 	width: 350px;
 	height: 300px;
 }
@@ -117,4 +116,5 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	font-size: 24px;
 }
