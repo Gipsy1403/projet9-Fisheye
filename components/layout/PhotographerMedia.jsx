@@ -8,14 +8,16 @@ import { useState } from "react";
 import ContactModal from "../ui/ContactModal";
 import MediaModal from "../ui/MediaModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVideo} from "@fortawesome/free-solid-svg-icons";
+import { faVideo, faChevronDown} from "@fortawesome/free-solid-svg-icons";
 import Likes from "./Likes";
 import TotalLikes from "./TotalLikes";
 
 
 export default function PhotographerMedia({photographer, imagesPhotographer,totalLikesPhotographer}){
-	const [modalOpen,setModalOpen]=useState(false)
-	const [sortBy,setSortBy]=useState("")
+	const [modalOpen,setModalOpen]=useState(false);
+	const [sortBy,setSortBy]=useState("likes");
+	const [isOpen, setIsOpen] = useState(false);
+
 
 	const sortedMedias=[...imagesPhotographer].sort((a, b) => {
 		if (sortBy==="title") {
@@ -35,6 +37,11 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 	const incrementAllLikes = () => {
   		setAllLikes((prev) => prev + 1);
 	};
+	const sortOptions = [
+		{ value: "likes", label: "Popularité" },
+		{ value: "title", label: "Titre" },
+		{ value: "date", label: "Date" },
+	];
 
 
 
@@ -67,18 +74,37 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 					/>
 				</article>
 				<section>
-					<div className={styles.order_by} >
-						<label className={styles.label_sort} htmlFor="order_by">Trier par</label>
-						<select
-							className={styles.select}
-							id="order_by"
-							value={sortBy}
-							onChange={(e) => setSortBy(e.target.value)}
-						>
-							<option className={styles.options}value="likes" >Popularité</option>
-							<option className={styles.options} value="title">Titre</option>
-							<option className={styles.options} value="date">Date</option>
-						</select>
+					<div className={styles.order_by}>
+						<p className={styles.label_sort}>Trier par</p>
+						<div className={styles.customSelect} role="select">
+							{/* Bouton principal */}
+							<button className={styles.selected} onClick={() => setIsOpen(!isOpen)}
+							>
+								{sortOptions.find(option => option.value === sortBy)?.label}
+								<FontAwesomeIcon
+									icon={faChevronDown}
+									className={`${styles.arrow} ${isOpen ? styles.open : ""}`}
+							/>
+							</button>
+							{/* Liste déroulante */}
+							{isOpen && (
+							<ul className={styles.dropdown}>
+								{sortOptions
+								.filter(option => option.value !== sortBy)
+								.map(option => (
+								<li
+									key={option.value}
+									onClick={() => {
+									setSortBy(option.value);
+									setIsOpen(false);
+									}}
+								>
+								{option.label}
+								</li>
+								))}
+							</ul>
+							)}
+						</div>
 					</div>
 					<div className={styles.container_media}>
 						{sortedMedias.map((pictures,index)=>(
