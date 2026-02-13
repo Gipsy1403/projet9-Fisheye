@@ -75,32 +75,55 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 				</article>
 				<section>
 					<div className={styles.order_by}>
-						<p className={styles.label_sort}>Trier par</p>
-						<div className={styles.customSelect} role="select">
-							{/* Bouton principal */}
-							<button className={styles.selected} onClick={() => setIsOpen(!isOpen)}
+						<p id="sortLabel" className={styles.label_sort}>Trier par</p>
+						<div className={styles.customSelect}>
+						{/* Bouton principal */}
+							<button
+								className={styles.selected}
+								onClick={() => setIsOpen(!isOpen)}
+								aria-haspopup="listbox"
+								aria-expanded={isOpen}
+								aria-labelledby="sortLabel"
 							>
 								{sortOptions.find(option => option.value === sortBy)?.label}
 								<FontAwesomeIcon
-									icon={faChevronDown}
-									className={`${styles.arrow} ${isOpen ? styles.open : ""}`}
+								icon={faChevronDown}
+								className={`${styles.arrow} ${isOpen ? styles.open : ""}`}
 							/>
 							</button>
+							{/* Label pour les lecteurs d’écran */}
+							<p id="sortLabel" className="sr-only">Trier par</p>
 							{/* Liste déroulante */}
 							{isOpen && (
-							<ul className={styles.dropdown}>
+							<ul className={styles.dropdown}
+								role="listbox"
+								aria-activedescendant={sortBy}
+								tabIndex={-1}
+							>
 								{sortOptions
-								.filter(option => option.value !== sortBy)
+								// empêche doublon
+								.filter(option => option.value !== sortBy) 
 								.map(option => (
-								<li
-									key={option.value}
-									onClick={() => {
-									setSortBy(option.value);
-									setIsOpen(false);
-									}}
-								>
-								{option.label}
-								</li>
+									<li
+										key={option.value}
+										role="option"
+										id={option.value}
+										aria-selected={option.value === sortBy}
+										tabIndex={0}
+										onClick={() => {
+										setSortBy(option.value);
+										setIsOpen(false);
+										}}
+										onKeyDown={(e) => {
+										if (e.key === "Enter" || e.key === " ") {
+										e.preventDefault();
+										setSortBy(option.value);
+										setIsOpen(false);
+										}
+										}}
+									>
+									{option.label}
+									</li>
 								))}
 							</ul>
 							)}
