@@ -76,7 +76,7 @@ export default function PhotographerMedia({photographer, imagesPhotographer,tota
 				</article>
 				<section>
 					<div className={styles.order_by}>
-						<p id={sortLabelId}className={styles.label_sort}>Trier par</p>
+						<p id={sortLabelId} className={styles.label_sort}>Trier par</p>
 						<div className={styles.customSelect}>
 							{/* Bouton principal */}
 							<button
