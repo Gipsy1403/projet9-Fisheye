@@ -83,12 +83,13 @@ export default function MediaModal({ photographer, imagesPhotographer, startInde
 // ********************************************************
 	// Création d'une référence pour accéder à l'élément vidéo dans le DOM
 	const videoRef = useRef(null);
+	const isVideo=pictures?.video;
 	// Effet qui s'exécute à chaque ouverture de la modale ou changement de média
 	useEffect(() => {
 		// Arrêt de l'exécution si la modale n'est pas ouverte
 		if (!open) return;
 		// Vérification si le média courant est une vidéo et si la référence vidéo est définie
-		if (pictures?.video && videoRef.current) {
+		if (isVideo && videoRef.current) {
 			// Mise du focus sur la vidéo
 			videoRef.current.focus();
 		} else if (prevBtnRef.current) {
@@ -96,7 +97,7 @@ export default function MediaModal({ photographer, imagesPhotographer, startInde
 			prevBtnRef.current.focus();
 		}
 	// Nettoyage automatique à la destruction de l'effet (aucune action nécessaire ici). Déclenchement de l'effet lorsque l'état open ou pictures change
-	}, [open, pictures]);
+	}, [open,isVideo]);
 // ********************************************************
 	// Retourne null si aucun média n’est trouvé à l’index courant
 	if (!pictures) return null;
