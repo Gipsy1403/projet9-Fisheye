@@ -4,30 +4,37 @@ import { useState, useEffect, useRef } from "react";
 import styles from "./MediaModal.module.css";
 import Image from "next/image";
 import Link from "next/link";
+import ErrorMessage from "./ErrorMessage";
 
 // Déclare le composant MediaModal et récupère les propriétés photographer, imagesPhotographer, startIndex, close et open
 export default function MediaModal({ photographer, imagesPhotographer, startIndex, close, open }) {
 
-	// Initialise un état pour stocker l’index du média actuellement affiché
-	const [index, setIndex] = useState(startIndex);
-	// Met à jour l'index quand la modale s'ouvre
-	useEffect(() => {
-		setIndex(startIndex);
-	}, [startIndex]);
+	// Initialise l'état index du media actuellement affiché avec startIndex si défini, sinon 0 par défaut
+	const [index, setIndex] = useState(() => startIndex ?? 0);
+	// Récupère le média correspondant à l'index actuel dans le tableau imagesPhotographer
+	const pictures = imagesPhotographer?.[index];
+
+// ********************************************************
+	// Initialise un état pour indiquer si une erreur de chargement s'est produite, valeur initiale false
+	const [loadError, setLoadError] = useState(false);
+
 // ********************************************************
 	// Initialise un état pour afficher un loading le tant que le media se charge
 	const [loading, setLoading] = useState(true);
-	// Active le loading à chaque changement d’image
-	useEffect(() => {		
-		setLoading(true);
-	}, [index]);
 
+// ********************************************************
+	// Crée une référence vers le bouton précédent pour manipulation directe du DOM
 	const prevBtnRef = useRef(null);
+	// Exécute un effet secondaire à chaque changement de l'état open
 	useEffect(() => {
+		// Vérifie si la modale est ouverte et si la référence est définie
 		if (open && prevBtnRef.current) {
-			prevBtnRef.current.focus(); // focus automatique quand la modale s’ouvre
+			// Applique le focus automatique sur le bouton précédent lorsque la modale s’ouvre
+			prevBtnRef.current.focus(); 
 		}
-	}, [open]);
+	// Déclenche l'effet uniquement lorsque open change
+	}, [open]); 
+
 // ********************************************************
 	// Création d'une référence pour accéder au conteneur principal de la modale
 	// Cette référence sera utilisée pour gérer le focus trap et sélectionner les éléments focusables
@@ -69,17 +76,17 @@ export default function MediaModal({ photographer, imagesPhotographer, startInde
 		return () => document.removeEventListener("keydown", handleTabKey);
 	// Déclenchement de l'effet à chaque ouverture ou fermeture de la modale
 	}, [open]); 
+
 // ********************************************************
 	// Définit une fonction permettant d’afficher le média précédent avec un effet circulaire
 	const previousImage = () =>
 		setIndex((index - 1 + imagesPhotographer.length) % imagesPhotographer.length);
+
 // ********************************************************
 	// Définit une fonction permettant d’afficher le média suivant avec un effet circulaire
 	const nextImage = () =>
 		setIndex((index + 1) % imagesPhotographer.length);
-// ********************************************************
-	// Récupère le média correspondant à l’index actuel
-	const pictures = imagesPhotographer[index];
+
 // ********************************************************
 	// Création d'une référence pour accéder à l'élément vidéo dans le DOM
 	const videoRef = useRef(null);
@@ -98,13 +105,26 @@ export default function MediaModal({ photographer, imagesPhotographer, startInde
 		}
 	// Nettoyage automatique à la destruction de l'effet (aucune action nécessaire ici). Déclenchement de l'effet lorsque l'état open ou pictures change
 	}, [open,isVideo]);
+
+
 // ********************************************************
-	// Retourne null si aucun média n’est trouvé à l’index courant
-	if (!pictures) return null;
+	// Vérifie si imagesPhotographer existe et contient au moins un média
+	if (!imagesPhotographer || imagesPhotographer.length === 0) {
+		console.error("MediaModal : aucun média disponible pour ce photographe !");
+		return <ErrorMessage message="Aucun média disponible pour ce photographe." />;
+	}
+	
+// ********************************************************
+	// Vérifie que le média courant existe
+	if (!pictures) {
+		console.error(`MediaModal : média introuvable à l'index ${index}`);
+		return <ErrorMessage message="Média introuvable." />;
+	}
+
+// ********************************************************
 	// Retourne null si la modale n’est pas ouverte afin de ne rien afficher
 	if (!open) return null;
-
-
+	
 	return (
 		<div className={styles.superposition} role="presentation">
 			<div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="modal-title" ref={modalRef}>
@@ -114,6 +134,7 @@ export default function MediaModal({ photographer, imagesPhotographer, startInde
 							<div className={styles.spinner}></div>
 						</div>
 					)}
+					{loadError && <ErrorMessage message="Impossible de charger ce média." />}
 					<div className={styles.container_medias}>
 						{pictures.image ? (
 							<Image
@@ -123,12 +144,21 @@ export default function MediaModal({ photographer, imagesPhotographer, startInde
 								width={1050}
 								height={900}
 								onLoadingComplete={()=> setLoading(false)}
+								onError={() => {
+									console.error(`MediaModal : erreur de chargement de l'image ${pictures.image}`);
+									setLoadError(true);
+								}}
 							/>
 						) : pictures.video ? (
 							<video className={styles.video} controls 
-							ref={videoRef}
-							tabIndex={0}
-							onLoadedData={() => setLoading(false)}>
+								ref={videoRef}
+								tabIndex={0}
+								onLoadedData={() => setLoading(false)}
+								onError={() => {
+									console.error(`MediaModal : erreur de chargement de la vidéo ${pictures.video}`);
+									setLoadError(true);
+								}}
+							>
 								<source src={`/assets/${pictures.video}`} type="video/mp4" />
 							</video>
 						) : null}

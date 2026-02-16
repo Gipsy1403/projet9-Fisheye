@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo, faChevronDown} from "@fortawesome/free-solid-svg-icons";
 import Likes from "./Likes";
 import TotalLikes from "./TotalLikes";
+import ErrorMessage from "../ui/ErrorMessage"
 
 // Déclare le composant PhotographerMedia et récupère les propriétés photographer, imagesPhotographer et totalLikesPhotographer
 export default function PhotographerMedia({photographer, imagesPhotographer, totalLikesPhotographer}){
@@ -87,6 +88,18 @@ export default function PhotographerMedia({photographer, imagesPhotographer, tot
 		{ value: "title", label: "Titre" },
 		{ value: "date", label: "Date" },
 	];
+
+// ********************************************************
+	//Vérifie que les données existent
+	if (!photographer) {
+		console.error("PhotographerMedia : photographe manquant !");
+		return <ErrorMessage message="Informations du photographe indisponibles." />;
+	}
+
+	if (!imagesPhotographer || imagesPhotographer.length === 0) {
+		console.error("PhotographerMedia : aucun média trouvé pour ce photographe !");
+		return <ErrorMessage message="Aucun média disponible pour ce photographe." />;
+	}
 
 	return (
 		<>

@@ -1,6 +1,7 @@
 "use client"
 import { useState } from "react";
 import styles from "./ContactModal.module.css";
+import ErrorMessage from "./ErrorMessage";
 
 // Déclare le composant ContactModal et récupère les propriétés open, close et photographer
 export default function ContactModal({ open, close, photographer }) {
@@ -12,21 +13,41 @@ export default function ContactModal({ open, close, photographer }) {
 	const [email, setEmail] = useState("");
 	// Initialise un état pour stocker le message saisi dans le formulaire
 	const [message, setMessage] = useState("");
+	// Initialise un état pour stocker le message d'erreur vu par l'utilisateur
+	const [errorMessage, setErrorMessage] = useState(""); 
+
 	// Retourne null si la modale n’est pas ouverte afin de ne rien afficher
 	if (!open) return null;
 	// Fonction pour envoyer le formulaire dans la console
 	const handleSubmit = (e) => {
-		e.preventDefault(); 
+		e.preventDefault();
+		// Vérifications simples
+		if (!firstName || !lastName || !email || !message) {
+			setErrorMessage("Tous les champs sont obligatoires !");
+			console.error("ContactModal : un ou plusieurs champs sont vides.");
+		return;
+		}
+		// Vérifie le format de l'email simple (peut être amélioré)
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (!emailRegex.test(email)) {
+			setErrorMessage("Veuillez entrer un email valide.");
+			console.error("ContactModal : email invalide ->", email);
+		return;
+		}
+		// Si tout est ok, réinitialise l'erreur
+		setErrorMessage("");
+		// Envoi des données dans la console
 		console.log("Prénom :", firstName);
 		console.log("Nom :", lastName);
 		console.log("Email :", email);
 		console.log("Message :", message);
-		// réinitialise les champs après envoi
+		// Réinitialisation des champs
 		setFirstName("");
 		setLastName("");
 		setEmail("");
 		setMessage("");
 	};
+
 
  	return (
 	<div className={styles.superposition} role="presentation">
@@ -40,6 +61,7 @@ export default function ContactModal({ open, close, photographer }) {
 			<h1 className={styles.title} id="contact-modal-title">
 				Contactez-moi <span>{photographer.name}</span>
 			</h1>
+			{errorMessage && <ErrorMessage message={errorMessage} />}
 			<div className={styles.fields}>
 				<div>
 					<label className={styles.label} htmlFor="first_name">
@@ -84,7 +106,10 @@ export default function ContactModal({ open, close, photographer }) {
 						id="email"
 						placeholder="Votre Email"
 						value={email}
-						onChange={(e) => setEmail(e.target.value)}
+						onChange={(e) => {
+							setEmail(e.target.value);
+							setErrorMessage("");
+						}}
 						required
 					/>
 				</div>

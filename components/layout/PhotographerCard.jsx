@@ -2,11 +2,30 @@ import {getAllPhotographers} from '../../app/lib/prisma-db';
 import styles from "./PhotographerCard.module.css";
 import Image from 'next/image';
 import Link from 'next/link';
+import ErrorMessage from "../ui/ErrorMessage"
+
 
 // Déclare une fonction asynchrone exportée par défaut nommée PhotographerCard
 export default async function PhotographerCard(){
+
+	let allPhotographers = []
+
+	try {
 	// Appelle la fonction getAllPhotographers et attend la récupération des données
-	const allPhotographers = await getAllPhotographers()
+	allPhotographers = await getAllPhotographers()
+
+	// Si la base de données est vide, lance une erreur personnalisée
+	if (!allPhotographers || allPhotographers.length === 0) {
+		throw new Error("Aucun photographe trouvé")
+	}
+	} catch (error) {
+	// Message en console
+	console.error("Erreur lors de la récupération des photographes :", error)
+
+	// Message pour l'utilisateur
+	return <ErrorMessage message="Impossible de charger les photographes pour le moment. Veuillez réessayer plus tard." />
+	}
+
 
 	return (
 		<>
