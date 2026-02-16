@@ -1,3 +1,5 @@
+/* Composant Likes */
+/* Like sous le média */
 .likes_red{
 	display: flex;
 	justify-content: space-between;
@@ -11,8 +13,9 @@
 	font-size: 24px;
 }
 
-/* **************** */
-
+/* ***************************************** */
+/* Composant TotalLikes */
+/* Container regroupant l'ensemble des likes */
 .container_total_likes{
 	position: fixed;
 	bottom: 10px;

@@ -1,3 +1,4 @@
+/* Encart du photographe */
 .photographers{
 	display: flex;
 	justify-content: space-between;
@@ -21,6 +22,7 @@
 	font-size: 18px;
 
 }
+/* btn contactez moi */
 .contact_me{
 	background-color: var(--primary);
 	color: var(--white);
@@ -41,30 +43,28 @@
 	object-fit: cover;
 	aspect-ratio: 1/1;
 }
+/* ***************************** */
+/* Section sur le tri des médias */
 .order_by{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
 	margin-bottom: 2rem;
+}
+.label_sort{
+	margin-right: 2rem;
 }
 .label_sort, .select, .options{
 	font-size: 18px;
 	font-weight: 700;
 }
-
-.order_by{
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-
-}
-.customSelect{
-	border: none;
-	position: relative;
-}
 .label_sort, .dropdown, .selected{
 	font-size: 18px;
 	font-weight: 700;
 }
-.label_sort{
-	margin-right: 2rem;
+.customSelect{
+	border: none;
+	position: relative;
 }
 .selected {
 	display: flex;
@@ -103,19 +103,22 @@
 	z-index: 9;
 }
 .dropdown li{
-  border-bottom: 1px solid var(--white);
-  padding: 15px; 
-  cursor: pointer;
+	border-bottom: 1px solid var(--white);
+	padding: 15px; 
+	cursor: pointer;
 }
 
 .dropdown li:last-child{
-  border-bottom: none;
+	border-bottom: none;
 }
 
 .dropdown li:hover{
-  background-color: var(--secondary);
-  border-radius: 5px;
+	background-color: var(--secondary);
+	border-radius: 5px;
 }
+
+/* *********************************************** */
+/* Visualisation de tous les medias du photographe */
 .container_media{
 	display: flex;
 	flex-wrap: wrap;
@@ -153,7 +156,6 @@
 }
 .card .video .icon{
 	font-size: 50px;
-
 }
 .description{
 	height: 51px;

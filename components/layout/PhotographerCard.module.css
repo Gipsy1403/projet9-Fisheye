@@ -9,7 +9,7 @@
 	margin: auto;
 	text-align: center;
 }
-.focus {
+.focus{
 	display: inline-block;
 	text-decoration: none;
 	transition: transform 0.2s ease;
