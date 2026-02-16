@@ -13,6 +13,21 @@
 	font-size: 24px;
 }
 
+.btn_like{
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	min-width: 44px;
+	min-height: 44px;
+
+	padding: 8px;
+	cursor: pointer;
+
+	background: none;
+	border: none;
+}
+
 /* ***************************************** */
 /* Composant TotalLikes */
 /* Container regroupant l'ensemble des likes */

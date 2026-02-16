@@ -54,21 +54,20 @@ export default function Likes({ mediaId, initialLikes, onLike }) {
 	return (
 	<div className={styles.likes_red}>
 		<p className={styles.likes}>{likes}</p>
-		<div
-			role="button"
+		<button
 			tabIndex={0}
 			aria-label={`Ajouter un like, total ${likes}`}
-			onClick={handleLike}     
+			onClick={handleLike}
+			className={styles.btn_like}
 			onKeyDown={handleKeyDown} 
-			style={{ display: "inline-block", cursor: "pointer" }}
 		>
 			<Image
 				src={`/assets/images/favorite.png`}
-				alt="" 
+				alt=""
 				width={24}
 				height={24}
 			/>
-		</div>
+		</button>
 		{error && <p style={{ color: "red" }}>{error}</p>}
 	</div>
 	);
