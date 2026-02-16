@@ -209,36 +209,42 @@ export default function PhotographerMedia({photographer, imagesPhotographer, tot
 					<div className={styles.container_media}>
 						{/* parcourt la liste triée des médias */}
 						{sortedMedias.map((pictures,index)=>(
-						<div className={styles.card} key={pictures.id} role="button" tabIndex={0}
-						onClick={()=>{
-							// ouvre la modal média au clic
-							setMediaIndex(index);
-							setMediaModalOpen(true);
-						}}
-						onKeyDown={(e) => {
-							// ouvre la modal média au clavier (entrée ou espace)
-							if (e.key === "Enter" || e.key === " ") {
-								e.preventDefault();
+						<div className={styles.card} key={pictures.id} 
+>							<button
+								tabIndex={0}
+								type="button"
+								onClick={()=>{
+								// ouvre la modal média au clic
 								setMediaIndex(index);
 								setMediaModalOpen(true);
-							}
-						}}>
-							{/* Si c'est une image */}
-							{pictures.image ? (
-							<Image
-								className={styles.picture}
-								src={`/assets/${pictures.image}`}
-								alt={pictures.title}
-								width={350}
-								height={300}
-								priority
-							/>
-							// Si c'est une vidéo
-							) : pictures.video ? (
-							<div className={styles.video} >
-								<FontAwesomeIcon className={styles.icon} icon={faVideo} />
-							</div>
-							) : null}
+								}}
+								onKeyDown={(e) => {
+									// ouvre la modal média au clavier (entrée ou espace)
+									if (e.key === "Enter" || e.key === " ") {
+										e.preventDefault();
+										setMediaIndex(index);
+										setMediaModalOpen(true);
+									}
+								}}
+								aria-label={`Ouvrir le média ${pictures.title}`}
+							>
+								{/* Si c'est une image */}
+								{pictures.image ? (
+								<Image
+									className={styles.picture}
+									src={`/assets/${pictures.image}`}
+									alt={pictures.title}
+									width={350}
+									height={300}
+									priority
+								/>
+								// Si c'est une vidéo
+								) : pictures.video ? (
+								<div className={styles.video} >
+									<FontAwesomeIcon className={styles.icon} icon={faVideo} />
+								</div>
+								) : null}
+							</button>
 							{/* conteneur de la description du média */}
 							<div className={styles.description}>
 								<p className={styles.title}>{pictures.title}</p>
