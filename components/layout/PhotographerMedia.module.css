@@ -91,11 +91,11 @@
 
 .dropdown{
 	position: absolute;
-	top: 90%;
-	left: 0;
+	/* top: 80%;
+	left: 0; */
 	width: 170px;
 	background-color: var(--primary);
-	list-style: none;
+	/* list-style: none; */
 	padding: 0;
 	margin: 0;
 	color: var(--white);
@@ -112,10 +112,11 @@
 	border-bottom: none;
 }
 
-.dropdown li:hover{
+.dropdown li:hover, .activeOption{
 	background-color: var(--secondary);
 	border-radius: 5px;
 }
+
 
 /* *********************************************** */
 /* Visualisation de tous les medias du photographe */

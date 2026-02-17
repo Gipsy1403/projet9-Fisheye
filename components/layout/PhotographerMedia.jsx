@@ -13,84 +13,72 @@ import TotalLikes from "./TotalLikes";
 import ErrorMessage from "../ui/ErrorMessage"
 
 // Déclare le composant PhotographerMedia et récupère les propriétés photographer, imagesPhotographer et totalLikesPhotographer
-export default function PhotographerMedia({photographer, imagesPhotographer, totalLikesPhotographer}){
 
-	// Initialise un état pour gérer l'ouverture ou la fermeture d'une modale
-	const [modalOpen, setModalOpen] = useState(false);
+export default function PhotographerMedia({ photographer, imagesPhotographer, totalLikesPhotographer }) {
+	// ======================================
+	// RÉFÉRENCES
+	// ======================================
+	const buttonRef = useRef(null);
+	const listboxRef = useRef(null);
+	const optionRefs = useRef([]); // Références pour les options du menu déroulant
 
-// **********************************************************
-	// Initialise un état pour gérer le critère de tri sélectionné
-	const [sortBy, setSortBy] = useState("likes");
-	
-// **********************************************************
-	// Initialise un état pour gérer l'ouverture d'un menu déroulant
-	const [isOpen, setIsOpen] = useState(false);
-	
-// **********************************************************
-	// Génère un identifiant unique pour l'accessibilité (aria-labelledby par exemple)
-	const sortLabelId = useId();
-	
-// **********************************************************
-	// Crée un tableau pour stocker les références des options
-	const optionRefs = useRef([]);
-	// Vérifie quand le menu s'ouvre
-	useEffect(() => {
-		// Si le menu est ouvert et que la première option existe
-		if (isOpen && optionRefs.current[0]) {
-		// Met le focus directement sur la première option du menu
-		optionRefs.current[0].focus();
-		}
-	// Déclenche ce code seulement quand isOpen change
-	}, [isOpen]);
-	
-// **********************************************************
-	// Crée une copie du tableau imagesPhotographer puis applique un tri selon le critère sélectionné
-	const sortedMedias = [...imagesPhotographer].sort((a, b) => {
-		// Si le tri sélectionné est "title", effectue un tri alphabétique
-		if (sortBy === "title") {
-			return a.title.localeCompare(b.title); 
-		}
-		// Si le tri sélectionné est "date", effectue un tri chronologique
-		else if (sortBy === "date") {
-			return new Date(a.date) - new Date(b.date); 
-		}
-		// Si le tri sélectionné est "likes", effectue un tri décroissant selon le nombre de likes
-		else if (sortBy === "likes") {
-			return b.likes - a.likes
-		}
-		// Retourne 0 si aucun critère ne correspond
-		return 0;
-	});
-	
-// **********************************************************
-	// Initialise un état pour stocker l'index du média actuellement sélectionné
-	const [mediaIndex, setMediaIndex] = useState(0)
-	
-// **********************************************************
-	// Initialise un état pour gérer l'ouverture ou la fermeture de la modale média
-	const [mediaModalOpen, setMediaModalOpen] = useState(false)
-	
-// **********************************************************
-	// Initialise un état pour stocker le total global des likes du photographe
-	const [allLikes, setAllLikes] = useState(totalLikesPhotographer)
-	
-// **********************************************************
-	// Déclare une fonction qui incrémente le total global des likes
-	const incrementAllLikes = () => {
-  		// Met à jour l'état en ajoutant 1 à la valeur précédente
-  		setAllLikes((prev) => prev + 1);
-	};
-	
-// **********************************************************
-	// 	Définit les différentes options de tri disponibles
+	// ======================================
+	// ÉTATS
+	// ======================================
+	const [modalOpen, setModalOpen] = useState(false); // modale générale
+	const [mediaModalOpen, setMediaModalOpen] = useState(false); // modale média
+	const [mediaIndex, setMediaIndex] = useState(0); // média sélectionné
+	const [allLikes, setAllLikes] = useState(totalLikesPhotographer); // total global des likes
+	const [sortBy, setSortBy] = useState("likes"); // critère de tri
+	const [isOpen, setIsOpen] = useState(false); // menu déroulant
+	const [activeIndex, setActiveIndex] = useState(0); // option active du menu déroulant
+
+	// ======================================
+	// IDENTIFIANT POUR ACCESSIBILITÉ
+	// ======================================
+	const sortLabelId = useId(); 
+
+	// ======================================
+	// OPTIONS DE TRI
+	// ======================================
 	const sortOptions = [
 		{ value: "likes", label: "Popularité" },
 		{ value: "title", label: "Titre" },
 		{ value: "date", label: "Date" },
 	];
 
-// ********************************************************
-	//Vérifie que les données existent
+	const filteredOptions = sortOptions.filter(option => option.value !== sortBy);
+	const activeOptionId = `sort-option-${filteredOptions[activeIndex]?.value || ""}`;
+
+	// ======================================
+	// TRI DES MÉDIAS
+	// ======================================
+	const sortedMedias = [...imagesPhotographer].sort((a, b) => {
+		if (sortBy === "title") return a.title.localeCompare(b.title);
+		if (sortBy === "date") return new Date(a.date) - new Date(b.date);
+		if (sortBy === "likes") return b.likes - a.likes;
+		return 0;
+	});
+
+	// ======================================
+	// FONCTIONS
+	// ======================================
+	const incrementAllLikes = () => setAllLikes(prev => prev + 1);
+
+	// ======================================
+	// EFFETS
+	// ======================================
+	// Focus sur le menu déroulant quand il s'ouvre
+	useEffect(() => {
+		if (isOpen) {
+			listboxRef.current?.focus();
+			if (optionRefs.current[0]) optionRefs.current[0].focus();
+		}
+	}, [isOpen]);
+
+	// ======================================
+	// ⚠ Vérification des données pour le rendu
+	// ======================================
 	if (!photographer) {
 		console.error("PhotographerMedia : photographe manquant !");
 		return <ErrorMessage message="Informations du photographe indisponibles." />;
@@ -142,6 +130,9 @@ export default function PhotographerMedia({photographer, imagesPhotographer, tot
 								aria-haspopup="listbox"
 								aria-expanded={isOpen}
 								aria-labelledby={sortLabelId}
+								aria-controls="sort-listbox"
+ref={buttonRef}
+
 							>
 								{/* Affiche le label correspondant à la valeur sélectionnée */}
 								{sortOptions.find(option => option.value === sortBy)?.label}
@@ -155,65 +146,69 @@ export default function PhotographerMedia({photographer, imagesPhotographer, tot
 							{/* Affiche la Liste déroulante si isOpen = true */}
 							{isOpen && (
 								// Affiche le menu seulement si isOpen est vrai
-								<ul
-								// Applique le style CSS du menu déroulant
-								className={styles.dropdown}
-								// Définit le rôle pour l'accessibilité comme liste de sélection
-								role="listbox"
-								// Lie la liste au label "Trier par" pour les lecteurs d'écran
-								aria-labelledby={sortLabelId}
-								>
-								{sortOptions
-									// Supprime l'option déjà sélectionnée pour ne pas la montrer
-									.filter(option => option.value !== sortBy)
-									// Parcourt les options restantes
-									.map((option, idx) => (
-										<li
-										// Clé unique pour React
-										key={option.value}
-										// Rôle d'option pour l'accessibilité
-										role="option"
-										// Identifiant de l'élément
-										id={option.value}
-										// Indique si cette option est sélectionnée
-										aria-selected={option.value === sortBy}
-										// Focus manuel avec flèches, Tab ne passe pas dessus
-										tabIndex={-1}
-										// Stocke chaque élément dans optionRefs pour gérer le focus avec les flèches
-										ref={el => { if (el) optionRefs.current[idx] = el; }}
-										// Action au clic : met à jour le critère de tri et ferme le menu
-										onClick={() => {
-											setSortBy(option.value);
-											setIsOpen(false);
-										}}
-										// Gestion du clavier pour sélection et navigation
-										onKeyDown={(e) => {
-											if (e.key === "Enter" || e.key === " ") {
-												// Sélectionne l'option et ferme le menu
-												e.preventDefault();
-												setSortBy(option.value);
-												setIsOpen(false);
-											} else if (e.key === "Escape") {
-											// Ferme le menu
-												e.preventDefault();
-												setIsOpen(false);
-											} else if (e.key === "ArrowDown") {
-											// Passe à l'option suivante
-												e.preventDefault();
-												const nextIdx = (idx + 1) % optionRefs.current.length;
-												optionRefs.current[nextIdx].focus();
-											} else if (e.key === "ArrowUp") {
-												// Passe à l'option précédente
-												e.preventDefault();
-												const prevIdx = (idx - 1 + optionRefs.current.length) % optionRefs.current.length;
-												optionRefs.current[prevIdx].focus();
-											}
-										}}
-										>
-											{/* Affiche le label de l'option */}
-											{option.label}
-										</li>
-									))}
+<ul
+  className={styles.dropdown}
+  role="listbox"
+  tabIndex={0}
+  aria-labelledby={sortLabelId}
+  aria-activedescendant={activeOptionId}
+  ref={listboxRef}
+	id="sort-listbox"
+
+  onKeyDown={(e) => {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveIndex((prev) =>
+        (prev + 1) % sortOptions.length
+      );
+    }
+
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveIndex((prev) =>
+        (prev - 1 + sortOptions.length) % sortOptions.length
+      );
+    }
+
+    if (e.key === "Enter") {
+      e.preventDefault();
+      setSortBy(filteredOptions[activeIndex].value);
+      setIsOpen(false);
+	 setIsOpen(false);
+buttonRef.current?.focus();
+
+    }
+
+    if (e.key === "Escape") {
+      e.preventDefault();
+      setIsOpen(false);
+	 setIsOpen(false);
+buttonRef.current?.focus();
+
+    }
+  }}
+>
+
+{filteredOptions
+  .filter(option => option.value !== sortBy) // <-- supprime l'option déjà choisie
+  .map((option, index) => (
+    <li
+      key={option.value}
+      id={`sort-option-${option.value}`}
+      role="option"
+      aria-selected={option.value === sortBy}
+      tabIndex={-1} 
+      className={activeIndex === index ? styles.activeOption : ""}
+      onClick={() => {
+        setSortBy(option.value);
+        setIsOpen(false);
+        buttonRef.current?.focus();
+      }}
+    >
+      {option.label}
+    </li>
+  ))}
+
 								</ul>
 							)}
 						</div>
