@@ -141,8 +141,6 @@ ref={buttonRef}
 								className={`${styles.arrow} ${isOpen ? styles.open : ""}`}
 							/>
 							</button>
-							{/* Label pour les lecteurs d’écran */}
-							<p id="sortLabel" className="sr-only">Trier par</p>
 							{/* Affiche la Liste déroulante si isOpen = true */}
 							{isOpen && (
 								// Affiche le menu seulement si isOpen est vrai
