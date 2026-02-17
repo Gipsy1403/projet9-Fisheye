@@ -48,10 +48,7 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 	];
 
 	const filteredOptions = sortOptions.filter(option => option.value !== sortBy);
-	const activeOptionId = filteredOptions[activeIndex]
-  ? `sort-option-${filteredOptions[activeIndex].value}`
-  : undefined; // ou null
-
+	const activeOptionId = `sort-option-${filteredOptions[activeIndex]?.value || ""}`;
 
 	// ======================================
 	// TRI DES MÉDIAS
@@ -130,7 +127,7 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 							<button
 								className={styles.selected}
 								onClick={() => setIsOpen(!isOpen)}
-								aria-haspopup="listbox"
+								aria-haspopup="true"
 								aria-expanded={isOpen}
 								aria-labelledby={sortLabelId}
 								aria-controls="sort-listbox"
