@@ -36,7 +36,7 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 	// ======================================
 	// IDENTIFIANT POUR ACCESSIBILITÉ
 	// ======================================
-	const sortLabelId = useId(); 
+	// const sortLabelId = useId(); 
 
 	// ======================================
 	// OPTIONS DE TRI
@@ -124,14 +124,16 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 				<section>
 					{/* Menu déroulant pour le tri des medias */}
 					<div className={styles.order_by}>
-						<label id={sortLabelId} className={styles.label_sort}>Trier par</label>
+						<label id="label_id" className={styles.label_sort}>Trier par</label>
+						{/* <label id={sortLabelId} className={styles.label_sort}>Trier par</label> */}
 						<div className={styles.customSelect}>
 							<button
 								className={styles.selected}
 								onClick={() => setIsOpen(!isOpen)}
 								aria-haspopup="true"
 								aria-expanded={isOpen}
-								aria-labelledby={sortLabelId}
+								aria-labelledby="label_id"
+								// aria-labelledby={sortLabelId}
 								aria-controls="sort-listbox"
 								ref={buttonRef}
 							>
@@ -149,7 +151,9 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 									className={styles.dropdown}
 									role="listbox"
 									tabIndex={0}
-									aria-labelledby={sortLabelId}
+									// aria-labelledby={sortLabelId}
+								aria-labelledby="label_id"
+
 									aria-activedescendant={activeOptionId}
 									ref={listboxRef}
 										id="sort-listbox"
