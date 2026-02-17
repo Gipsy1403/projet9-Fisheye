@@ -48,7 +48,9 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 	];
 
 	const filteredOptions = sortOptions.filter(option => option.value !== sortBy);
-	const activeOptionId = `sort-option-${filteredOptions[activeIndex]?.value || ""}`;
+	const activeOptionId = filteredOptions[activeIndex]
+  ? `sort-option-${filteredOptions[activeIndex].value}`
+  : undefined; // React supprime l'attribut si undefined
 
 	// ======================================
 	// TRI DES MÉDIAS
@@ -131,7 +133,7 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 								aria-expanded={isOpen}
 								aria-labelledby={sortLabelId}
 								aria-controls="sort-listbox"
-ref={buttonRef}
+								ref={buttonRef}
 							>
 								{/* Affiche le label correspondant à la valeur sélectionnée */}
 								{sortOptions.find(option => option.value === sortBy)?.label}
@@ -143,69 +145,67 @@ ref={buttonRef}
 							{/* Affiche la Liste déroulante si isOpen = true */}
 							{isOpen && (
 								// Affiche le menu seulement si isOpen est vrai
-<ul
-  className={styles.dropdown}
-  role="listbox"
-  tabIndex={0}
-  aria-labelledby={sortLabelId}
-  aria-activedescendant={activeOptionId}
-  ref={listboxRef}
-	id="sort-listbox"
+								<ul
+									className={styles.dropdown}
+									role="listbox"
+									tabIndex={0}
+									aria-labelledby={sortLabelId}
+									aria-activedescendant={activeOptionId}
+									ref={listboxRef}
+										id="sort-listbox"
 
-  onKeyDown={(e) => {
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setActiveIndex((prev) =>
-        (prev + 1) % sortOptions.length
-      );
-    }
+									onKeyDown={(e) => {
+									if (e.key === "ArrowDown") {
+										e.preventDefault();
+										setActiveIndex((prev) =>
+										(prev + 1) % sortOptions.length
+										);
+									}
 
-    if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setActiveIndex((prev) =>
-        (prev - 1 + sortOptions.length) % sortOptions.length
-      );
-    }
+									if (e.key === "ArrowUp") {
+										e.preventDefault();
+										setActiveIndex((prev) =>
+										(prev - 1 + sortOptions.length) % sortOptions.length
+										);
+									}
 
-    if (e.key === "Enter") {
-      e.preventDefault();
-      setSortBy(filteredOptions[activeIndex].value);
-      setIsOpen(false);
-	 setIsOpen(false);
-buttonRef.current?.focus();
+									if (e.key === "Enter") {
+										e.preventDefault();
+										setSortBy(filteredOptions[activeIndex].value);
+										setIsOpen(false);
+										setIsOpen(false);
+									buttonRef.current?.focus();
 
-    }
+									}
 
-    if (e.key === "Escape") {
-      e.preventDefault();
-      setIsOpen(false);
-	 setIsOpen(false);
-buttonRef.current?.focus();
+									if (e.key === "Escape") {
+										e.preventDefault();
+										setIsOpen(false);
+										setIsOpen(false);
+									buttonRef.current?.focus();
 
-    }
-  }}
->
-
-{filteredOptions
-  .filter(option => option.value !== sortBy) // <-- supprime l'option déjà choisie
-  .map((option, index) => (
-    <li
-      key={option.value}
-      id={`sort-option-${option.value}`}
-      role="option"
-      aria-selected={option.value === sortBy}
-      tabIndex={-1} 
-      className={activeIndex === index ? styles.activeOption : ""}
-      onClick={() => {
-        setSortBy(option.value);
-        setIsOpen(false);
-        buttonRef.current?.focus();
-      }}
-    >
-      {option.label}
-    </li>
-  ))}
-
+									}
+									}}
+								>
+									{filteredOptions
+									.filter(option => option.value !== sortBy) // <-- supprime l'option déjà choisie
+									.map((option, index) => (
+									<li
+										key={option.value}
+										id={`sort-option-${option.value}`}
+										role="option"
+										aria-selected={option.value === sortBy}
+										tabIndex={-1} 
+										className={activeIndex === index ? styles.activeOption : ""}
+										onClick={() => {
+										setSortBy(option.value);
+										setIsOpen(false);
+										buttonRef.current?.focus();
+										}}
+									>
+										{option.label}
+									</li>
+									))}
 								</ul>
 							)}
 						</div>
