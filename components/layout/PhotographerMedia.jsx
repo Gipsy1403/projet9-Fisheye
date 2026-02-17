@@ -124,7 +124,7 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 				<section>
 					{/* Menu déroulant pour le tri des medias */}
 					<div className={styles.order_by}>
-						<span id={sortLabelId} className={styles.label_sort}>Trier par</span>
+						<label id={sortLabelId} className={styles.label_sort}>Trier par</label>
 						<div className={styles.customSelect}>
 							<button
 								className={styles.selected}
