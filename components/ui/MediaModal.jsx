@@ -119,7 +119,7 @@ export default function MediaModal({ photographer, imagesPhotographer, startInde
 								alt={currentMedia.title}
 								width={1050}
 								height={900}
-								onLoadingComplete={()=> setLoading(false)}
+								onLoad={()=> setLoading(false)}
 								onError={() => {
 									console.error(`MediaModal : erreur de chargement de l'image ${currentMedia.image}`);
 									setLoadError(true);

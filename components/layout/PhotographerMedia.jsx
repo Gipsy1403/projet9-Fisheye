@@ -3,7 +3,7 @@
 import styles from "./PhotographerMedia.module.css";
 import Image from 'next/image';
 import HeaderPhotographer from "./Header-photographer";
-import { useState, useId,useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import ContactModal from "../ui/ContactModal";
 import MediaModal from "../ui/MediaModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -32,11 +32,6 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 	const [sortBy, setSortBy] = useState("likes"); // critère de tri
 	const [isOpen, setIsOpen] = useState(false); // menu déroulant
 	const [activeIndex, setActiveIndex] = useState(0); // option active du menu déroulant
-
-	// ======================================
-	// IDENTIFIANT POUR ACCESSIBILITÉ
-	// ======================================
-	// const sortLabelId = useId(); 
 
 	// ======================================
 	// OPTIONS DE TRI
@@ -130,10 +125,9 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 							<button
 								className={styles.selected}
 								onClick={() => setIsOpen(!isOpen)}
-								aria-haspopup="true"
+								aria-haspopup="listbox"
 								aria-expanded={isOpen}
 								aria-labelledby="label_id"
-								// aria-labelledby={sortLabelId}
 								aria-controls="sort-listbox"
 								ref={buttonRef}
 							>
@@ -142,7 +136,7 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 								<FontAwesomeIcon
 								icon={faChevronDown}
 								className={`${styles.arrow} ${isOpen ? styles.open : ""}`}
-							/>
+								/>
 							</button>
 							{/* Affiche la Liste déroulante si isOpen = true */}
 							{isOpen && (
@@ -151,64 +145,62 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 									className={styles.dropdown}
 									role="listbox"
 									tabIndex={0}
-									// aria-labelledby={sortLabelId}
-								aria-labelledby="label_id"
-
+									aria-labelledby="label_id"
 									aria-activedescendant={activeOptionId}
 									ref={listboxRef}
-										id="sort-listbox"
+									id="sort-listbox"
 
 									onKeyDown={(e) => {
-									if (e.key === "ArrowDown") {
-										e.preventDefault();
-										setActiveIndex((prev) =>
-										(prev + 1) % sortOptions.length
-										);
-									}
+										if (e.key === "ArrowDown") {
+											e.preventDefault();
+											setActiveIndex((prev) =>
+											(prev + 1) % sortOptions.length
+											);
+										}
 
-									if (e.key === "ArrowUp") {
-										e.preventDefault();
-										setActiveIndex((prev) =>
-										(prev - 1 + sortOptions.length) % sortOptions.length
-										);
-									}
+										if (e.key === "ArrowUp") {
+											e.preventDefault();
+											setActiveIndex((prev) =>
+											(prev - 1 + sortOptions.length) % sortOptions.length
+											);
+										}
 
-									if (e.key === "Enter") {
-										e.preventDefault();
-										setSortBy(filteredOptions[activeIndex].value);
-										setIsOpen(false);
-										setIsOpen(false);
-									buttonRef.current?.focus();
+										if (e.key === "Enter") {
+											e.preventDefault();
+											setSortBy(filteredOptions[activeIndex].value);
+											setIsOpen(false);
+											setIsOpen(false);
+										buttonRef.current?.focus();
 
-									}
+										}
 
-									if (e.key === "Escape") {
-										e.preventDefault();
-										setIsOpen(false);
-										setIsOpen(false);
-									buttonRef.current?.focus();
+										if (e.key === "Escape") {
+											e.preventDefault();
+											setIsOpen(false);
+											setIsOpen(false);
+										buttonRef.current?.focus();
 
-									}
+										}
 									}}
 								>
 									{filteredOptions
 									.filter(option => option.value !== sortBy) // <-- supprime l'option déjà choisie
 									.map((option, index) => (
-									<li
-										key={option.value}
-										id={`sort-option-${option.value}`}
-										role="option"
-										aria-selected={option.value === sortBy}
-										tabIndex={-1} 
-										className={activeIndex === index ? styles.activeOption : ""}
-										onClick={() => {
-										setSortBy(option.value);
-										setIsOpen(false);
-										buttonRef.current?.focus();
-										}}
-									>
-										{option.label}
-									</li>
+										<li
+											key={option.value}
+											id={`sort-option-${option.value}`}
+											role="option"
+											aria-selected={option.value === sortBy}
+											tabIndex={-1} 
+											className={activeIndex === index ? styles.activeOption : ""}
+											onClick={() => {
+											setSortBy(option.value);
+											setIsOpen(false);
+											buttonRef.current?.focus();
+											}}
+										>
+											{option.label}
+										</li>
 									))}
 								</ul>
 							)}

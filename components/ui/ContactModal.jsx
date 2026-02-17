@@ -1,52 +1,106 @@
 "use client"
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./ContactModal.module.css";
 import ErrorMessage from "./ErrorMessage";
 
 // Déclare le composant ContactModal et récupère les propriétés open, close et photographer
 export default function ContactModal({ open, close, photographer }) {
-	// Initialise un état pour stocker le prénom saisi dans le formulaire
-	const [firstName, setFirstName] = useState("");
-	// Initialise un état pour stocker le nom saisi dans le formulaire
-	const [lastName, setLastName] = useState("");
-	// Initialise un état pour stocker l’email saisi dans le formulaire
-	const [email, setEmail] = useState("");
-	// Initialise un état pour stocker le message saisi dans le formulaire
-	const [message, setMessage] = useState("");
-	// Initialise un état pour stocker le message d'erreur vu par l'utilisateur
-	const [errorMessage, setErrorMessage] = useState(""); 
+  // ⚡ États pour chaque champ du formulaire
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-	// Retourne null si la modale n’est pas ouverte afin de ne rien afficher
-	if (!open) return null;
-	// Fonction pour envoyer le formulaire dans la console
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		// Vérifications simples
-		if (!firstName || !lastName || !email || !message) {
-			setErrorMessage("Tous les champs sont obligatoires !");
-			console.error("ContactModal : un ou plusieurs champs sont vides.");
-		return;
-		}
-		// Vérifie le format de l'email simple (peut être amélioré)
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		if (!emailRegex.test(email)) {
-			setErrorMessage("Veuillez entrer un email valide.");
-			console.error("ContactModal : email invalide ->", email);
-		return;
-		}
-		// Si tout est ok, réinitialise l'erreur
-		setErrorMessage("");
-		// Envoi des données dans la console
-		console.log("Prénom :", firstName);
-		console.log("Nom :", lastName);
-		console.log("Email :", email);
-		console.log("Message :", message);
-		// Réinitialisation des champs
-		setFirstName("");
-		setLastName("");
-		setEmail("");
-		setMessage("");
-	};
+  // Référence de la modale pour le focus trap
+  const modalRef = useRef(null);
+
+  // 🔒 Focus trap et navigation clavier
+  useEffect(() => {
+    if (!open || !modalRef.current) return;
+
+    const focusableElements = modalRef.current.querySelectorAll(
+      "button, input, textarea, select, a[href]"
+    );
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Tab") {
+        if (e.shiftKey) {
+          // Shift + Tab
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          // Tab normal
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    // Focus automatique sur le premier champ
+    firstElement.focus();
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
+
+  // 🔒 Bloquer le scroll du body lorsque la modale est ouverte
+  useEffect(() => {
+    if (!open) return;
+
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
+
+  // 🔹 Si la modale n’est pas ouverte, on ne rend rien
+  if (!open) return null;
+
+  // ✉️ Fonction pour gérer l'envoi du formulaire
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // 1️⃣ Vérification des champs obligatoires
+    if (!firstName || !lastName || !email || !message) {
+      setErrorMessage("Tous les champs sont obligatoires !");
+      console.error("Un ou plusieurs champs sont vides.");
+      return;
+    }
+
+    // 2️⃣ Vérification simple de l'email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setErrorMessage("Veuillez entrer un email valide.");
+      console.error("Email invalide :", email);
+      return;
+    }
+
+    // 3️⃣ Tout est valide, on réinitialise l'erreur
+    setErrorMessage("");
+
+    // 4️⃣ Envoi des données dans la console
+    console.log("Données du formulaire :", { firstName, lastName, email, message });
+
+    // 5️⃣ Réinitialisation des champs
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setMessage("");
+
+    // 6️⃣ Fermeture de la modale
+    close();
+  };
 
 
  	return (
@@ -56,6 +110,7 @@ export default function ContactModal({ open, close, photographer }) {
 			role="dialog"
 			aria-modal="true"
 			aria-labelledby="contact-modal-title"
+			ref={modalRef}
 		>
 		<form className={styles.container_formulaire} onSubmit={handleSubmit}>
 			<h1 className={styles.title} id="contact-modal-title">
