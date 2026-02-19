@@ -146,7 +146,8 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 						{/* Conteneur personnalisé pour le bouton et la liste déroulante */}
 						<div className={styles.customSelect}>
 							{/* Bouton qui affiche l'option sélectionnée et ouvre/ferme le menu */}
-							<button
+							<div
+								role="button"
 								className={styles.selected}    // Style du bouton
 								onClick={() => setIsOpen(!isOpen)}  // Bascule l'ouverture du menu
 								aria-haspopup="listbox"     // Indique que le bouton ouvre un listbox
@@ -163,7 +164,7 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 									icon={faChevronDown}
 									className={`${styles.arrow} ${isOpen ? styles.open : ""}`}
 								/>
-							</button>
+							</div>
 							{/* Liste déroulante affichée uniquement si isOpen = true */}
 							{isOpen && (
 								<ul
