@@ -142,7 +142,7 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 					{/* Conteneur pour le menu déroulant de tri des médias */}
 					<div className={styles.order_by}>
 						{/* Label pour indiquer le critère de tri */}
-						<label id="label_id" className={styles.label_sort}>Trier par</label>
+						<p className={styles.label_sort}>Trier par</p>
 						{/* Conteneur personnalisé pour le bouton et la liste déroulante */}
 						<div className={styles.customSelect}>
 							{/* Bouton qui affiche l'option sélectionnée et ouvre/ferme le menu */}
@@ -151,7 +151,8 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 								onClick={() => setIsOpen(!isOpen)}  // Bascule l'ouverture du menu
 								aria-haspopup="listbox"     // Indique que le bouton ouvre un listbox
 								aria-expanded={isOpen}    // Indique si le menu est ouvert
-								aria-labelledby="label_id"     // Lien avec le label pour l'accessibilité
+								aria-label={`Trier par ${sortOptions.find(option => option.value === sortBy)?.label}`}
+								// aria-labelledby="label_id"     // Lien avec le label pour l'accessibilité
 								aria-controls="sort-listbox"    // Lien avec la liste déroulante
 								ref={buttonRef}   // Référence pour le focus
 							>
@@ -169,7 +170,8 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 									className={styles.dropdown}    // Style de la liste
 									role="listbox"   // Indique un listbox pour l'accessibilité
 									tabIndex={0}    // Permet le focus clavier
-									aria-labelledby="label_id"   // Lien avec le label
+									aria-label={`Options de tri pour ${sortOptions.find(option => option.value === sortBy)?.label}`}
+									// aria-labelledby="label_id"   // Lien avec le label
 									aria-activedescendant={activeOptionId}      // Indique l'option active pour l'accessibilité
 									ref={listboxRef}   // Référence pour le focus trap
 									id="sort-listbox"  // ID pour relier au bouton
