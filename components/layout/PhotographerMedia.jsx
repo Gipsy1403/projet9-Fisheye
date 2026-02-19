@@ -53,9 +53,9 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 	// Filtre les options pour exclure celle actuellement sélectionnée
 	const filteredOptions = sortOptions.filter(option => option.value !== sortBy);
 	// Détermine l'ID de l'option active pour le menu déroulant
-	const activeOptionId = filteredOptions[activeIndex]
-	? `sort-option-${filteredOptions[activeIndex].value}`
-	: undefined; // Supprime l'attribut si aucune option n'est active
+	// const activeOptionId = filteredOptions[activeIndex]
+	// ? `sort-option-${filteredOptions[activeIndex].value}`
+	// : undefined; // Supprime l'attribut si aucune option n'est active
 
 // **********************************
 // TRI DES MÉDIAS
@@ -172,7 +172,8 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 									tabIndex={0}    // Permet le focus clavier
 									aria-label={`Options de tri pour ${sortOptions.find(option => option.value === sortBy)?.label}`}
 									// aria-labelledby="label_id"   // Lien avec le label
-									aria-activedescendant={activeOptionId}      // Indique l'option active pour l'accessibilité
+									aria-activedescendant={`sort-option-${filteredOptions[activeIndex]?.value}`}
+									// aria-activedescendant={activeOptionId}      // Indique l'option active pour l'accessibilité
 									ref={listboxRef}   // Référence pour le focus trap
 									id="sort-listbox"  // ID pour relier au bouton
 									// Gestion de la navigation clavier dans le menu
