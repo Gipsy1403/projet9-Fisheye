@@ -39,27 +39,14 @@ export default function Likes({ mediaId, initialLikes, onLike }) {
 		}
 	};
 	
-// ********************************************************
-	// fonction qui gère les touches clavier (Enter ou Space)
-	// const handleKeyDown = (e) => {
-	// 	// si Enter ou espace est pressé
-	// 	if (e.key === "Enter" || e.key === " ") {
-	// 		// empêche le scroll quand Space est pressé
-	// 		e.preventDefault();
-	// 		// ajoute un like et empêche la propagation
-	// 		handleLike(e);
-	// 	}
-	// };
 
 	return (
 	<div className={styles.likes_red}>
 		<p className={styles.likes}>{likes}</p>
 		<button
-			// tabIndex={0}
 			aria-label={`Ajouter un like, total ${likes}`}
 			onClick={handleLike}
 			className={styles.btn_like}
-			// onKeyDown={handleKeyDown} 
 		>
 			<div style={{ width: 24, height: 24, position: 'relative' }}>
 				<Image

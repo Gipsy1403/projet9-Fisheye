@@ -13,78 +13,99 @@ import TotalLikes from "./TotalLikes";
 import ErrorMessage from "../ui/ErrorMessage"
 
 // Déclare le composant PhotographerMedia et récupère les propriétés photographer, imagesPhotographer et totalLikesPhotographer
-
 export default function PhotographerMedia({ photographer, imagesPhotographer, totalLikesPhotographer }) {
-	// ======================================
-	// RÉFÉRENCES
-	// ======================================
+
+// **********************************
+// RÉFÉRENCES
+	// Création d'une référence pour le bouton principal
 	const buttonRef = useRef(null);
+	// Création d'une référence pour le menu déroulant
 	const listboxRef = useRef(null);
-	const optionRefs = useRef([]); // Références pour les options du menu déroulant
+	// Création de références pour chaque option du menu déroulant
+	const optionRefs = useRef([]);
 
-	// ======================================
-	// ÉTATS
-	// ======================================
-	const [modalOpen, setModalOpen] = useState(false); // modale générale
-	const [mediaModalOpen, setMediaModalOpen] = useState(false); // modale média
-	const [mediaIndex, setMediaIndex] = useState(0); // média sélectionné
-	const [allLikes, setAllLikes] = useState(totalLikesPhotographer); // total global des likes
-	const [sortBy, setSortBy] = useState("likes"); // critère de tri
-	const [isOpen, setIsOpen] = useState(false); // menu déroulant
-	const [activeIndex, setActiveIndex] = useState(0); // option active du menu déroulant
+// **********************************
+// ÉTATS
+	// État pour savoir si la modale générale est ouverte
+	const [modalOpen, setModalOpen] = useState(false);
+	// État pour savoir si la modale d'un média est ouverte
+	const [mediaModalOpen, setMediaModalOpen] = useState(false);
+	// État pour stocker l'index du média sélectionné
+	const [mediaIndex, setMediaIndex] = useState(0);
+	// État pour le total global des likes
+	const [allLikes, setAllLikes] = useState(totalLikesPhotographer);
+	// État pour le critère de tri actuel
+	const [sortBy, setSortBy] = useState("likes");
+	// État pour savoir si le menu déroulant est ouvert
+	const [isOpen, setIsOpen] = useState(false);
+	// État pour l'index de l'option active dans le menu déroulant
+	const [activeIndex, setActiveIndex] = useState(0);
 
-	// ======================================
-	// OPTIONS DE TRI
-	// ======================================
+// **********************************
+// OPTIONS DE TRI
+	// Liste des options disponibles pour le tri des médias
 	const sortOptions = [
-		{ value: "likes", label: "Popularité" },
-		{ value: "title", label: "Titre" },
-		{ value: "date", label: "Date" },
+	{ value: "likes", label: "Popularité" },
+	{ value: "title", label: "Titre" },
+	{ value: "date", label: "Date" },
 	];
 
+	// Filtre les options pour exclure celle actuellement sélectionnée
 	const filteredOptions = sortOptions.filter(option => option.value !== sortBy);
+	// Détermine l'ID de l'option active pour le menu déroulant
 	const activeOptionId = filteredOptions[activeIndex]
-  ? `sort-option-${filteredOptions[activeIndex].value}`
-  : undefined; // React supprime l'attribut si undefined
+	? `sort-option-${filteredOptions[activeIndex].value}`
+	: undefined; // Supprime l'attribut si aucune option n'est active
 
-	// ======================================
-	// TRI DES MÉDIAS
-	// ======================================
+// **********************************
+// TRI DES MÉDIAS
+	// Création d'une copie des médias et tri selon le critère choisi
 	const sortedMedias = [...imagesPhotographer].sort((a, b) => {
+		// Tri alphabétique par titre
 		if (sortBy === "title") return a.title.localeCompare(b.title);
+		// Tri chronologique par date
 		if (sortBy === "date") return new Date(a.date) - new Date(b.date);
+		// Tri par popularité (likes décroissants)
 		if (sortBy === "likes") return b.likes - a.likes;
 		return 0;
 	});
 
-	// ======================================
-	// FONCTIONS
-	// ======================================
+// **********************************
+// FONCTIONS
+	// Incrémentation du total global des likes
 	const incrementAllLikes = () => setAllLikes(prev => prev + 1);
 
-	// ======================================
-	// EFFETS
-	// ======================================
-	// Focus sur le menu déroulant quand il s'ouvre
+// **********************************
+// EFFETS
+	// Focus automatique sur le menu déroulant lorsque celui-ci s'ouvre
 	useEffect(() => {
-		if (isOpen) {
-			listboxRef.current?.focus();
-			if (optionRefs.current[0]) optionRefs.current[0].focus();
-		}
+	if (isOpen) {
+		// Met le focus sur le conteneur du menu
+		listboxRef.current?.focus();
+		// Met le focus sur la première option si elle existe
+		if (optionRefs.current[0]) optionRefs.current[0].focus();
+	}
 	}, [isOpen]);
 
-	// ======================================
-	// ⚠ Vérification des données pour le rendu
-	// ======================================
+// **********************************
+// Vérification des données pour le rendu
+
+	// Vérification de la présence des informations du photographe
 	if (!photographer) {
+		// Message d'erreur en console si photographe absent
 		console.error("PhotographerMedia : photographe manquant !");
+		// Affichage d'un message d'erreur à l'utilisateur
 		return <ErrorMessage message="Informations du photographe indisponibles." />;
 	}
 
+	// Vérification de la présence des médias
 	if (!imagesPhotographer || imagesPhotographer.length === 0) {
+		// Message d'erreur en console si aucun média n'est disponible
 		console.error("PhotographerMedia : aucun média trouvé pour ce photographe !");
+		// Affichage d'un message d'erreur à l'utilisateur
 		return <ErrorMessage message="Aucun média disponible pour ce photographe." />;
 	}
+
 
 	return (
 		<>
@@ -116,89 +137,91 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 						height={200}
 					/>
 				</article>
+				{/* Section principale contenant le menu de tri et les médias */}
 				<section>
-					{/* Menu déroulant pour le tri des medias */}
+					{/* Conteneur pour le menu déroulant de tri des médias */}
 					<div className={styles.order_by}>
+						{/* Label pour indiquer le critère de tri */}
 						<label id="label_id" className={styles.label_sort}>Trier par</label>
-						{/* <label id={sortLabelId} className={styles.label_sort}>Trier par</label> */}
+						{/* Conteneur personnalisé pour le bouton et la liste déroulante */}
 						<div className={styles.customSelect}>
+							{/* Bouton qui affiche l'option sélectionnée et ouvre/ferme le menu */}
 							<button
-								className={styles.selected}
-								onClick={() => setIsOpen(!isOpen)}
-								aria-haspopup="listbox"
-								aria-expanded={isOpen}
-								aria-labelledby="label_id"
-								aria-controls="sort-listbox"
-								ref={buttonRef}
+								className={styles.selected}    // Style du bouton
+								onClick={() => setIsOpen(!isOpen)}  // Bascule l'ouverture du menu
+								aria-haspopup="listbox"     // Indique que le bouton ouvre un listbox
+								aria-expanded={isOpen}    // Indique si le menu est ouvert
+								aria-labelledby="label_id"     // Lien avec le label pour l'accessibilité
+								aria-controls="sort-listbox"    // Lien avec la liste déroulante
+								ref={buttonRef}   // Référence pour le focus
 							>
-								{/* Affiche le label correspondant à la valeur sélectionnée */}
+								{/* Affiche le label correspondant à la valeur actuellement sélectionnée */}
 								{sortOptions.find(option => option.value === sortBy)?.label}
+								{/* Icône flèche indiquant l'état du menu (ouvert/fermé) */}
 								<FontAwesomeIcon
-								icon={faChevronDown}
-								className={`${styles.arrow} ${isOpen ? styles.open : ""}`}
+									icon={faChevronDown}
+									className={`${styles.arrow} ${isOpen ? styles.open : ""}`}
 								/>
 							</button>
-							{/* Affiche la Liste déroulante si isOpen = true */}
+							{/* Liste déroulante affichée uniquement si isOpen = true */}
 							{isOpen && (
-								// Affiche le menu seulement si isOpen est vrai
 								<ul
-									className={styles.dropdown}
-									role="listbox"
-									tabIndex={0}
-									aria-labelledby="label_id"
-									aria-activedescendant={activeOptionId}
-									ref={listboxRef}
-									id="sort-listbox"
-
+									className={styles.dropdown}    // Style de la liste
+									role="listbox"   // Indique un listbox pour l'accessibilité
+									tabIndex={0}    // Permet le focus clavier
+									aria-labelledby="label_id"   // Lien avec le label
+									aria-activedescendant={activeOptionId}      // Indique l'option active pour l'accessibilité
+									ref={listboxRef}   // Référence pour le focus trap
+									id="sort-listbox"  // ID pour relier au bouton
+									// Gestion de la navigation clavier dans le menu
 									onKeyDown={(e) => {
-										if (e.key === "ArrowDown") {
-											e.preventDefault();
-											setActiveIndex((prev) =>
+									// Flèche bas : passe à l'option suivante
+									if (e.key === "ArrowDown") {
+										e.preventDefault();
+										setActiveIndex((prev) =>
 											(prev + 1) % sortOptions.length
-											);
-										}
-
-										if (e.key === "ArrowUp") {
-											e.preventDefault();
-											setActiveIndex((prev) =>
+										);
+									}
+									// Flèche haut : passe à l'option précédente
+									if (e.key === "ArrowUp") {
+										e.preventDefault();
+										setActiveIndex((prev) =>
 											(prev - 1 + sortOptions.length) % sortOptions.length
-											);
-										}
-
-										if (e.key === "Enter") {
-											e.preventDefault();
-											setSortBy(filteredOptions[activeIndex].value);
-											setIsOpen(false);
-											setIsOpen(false);
-										buttonRef.current?.focus();
-
-										}
-
-										if (e.key === "Escape") {
-											e.preventDefault();
-											setIsOpen(false);
-											setIsOpen(false);
-										buttonRef.current?.focus();
-
-										}
+										);
+									}
+									// Touche Entrée : sélectionne l'option active
+									if (e.key === "Enter") {
+										e.preventDefault();
+										setSortBy(filteredOptions[activeIndex].value); // Met à jour le tri
+										setIsOpen(false);   // Ferme le menu
+										buttonRef.current?.focus();   // Retourne le focus sur le bouton
+									}
+									// Touche Échap : ferme le menu sans changer l'option
+									if (e.key === "Escape") {
+										e.preventDefault();
+										setIsOpen(false);    // Ferme le menu
+										buttonRef.current?.focus();  // Retourne le focus sur le bouton
+									}
 									}}
 								>
+									{/* Parcourt les options filtrées et affiche chaque option */}
 									{filteredOptions
-									.filter(option => option.value !== sortBy) // <-- supprime l'option déjà choisie
+									.filter(option => option.value !== sortBy) // Supprime l'option déjà sélectionnée
 									.map((option, index) => (
 										<li
-											key={option.value}
-											id={`sort-option-${option.value}`}
-											role="option"
-											aria-selected={option.value === sortBy}
-											tabIndex={-1} 
-											className={activeIndex === index ? styles.activeOption : ""}
-											onClick={() => {
-											setSortBy(option.value);
-											setIsOpen(false);
-											buttonRef.current?.focus();
+											key={option.value}                       // Clé unique pour React
+											id={`sort-option-${option.value}`}       // ID pour accessibilité
+											role="option"                            // Indique un rôle d'option
+											aria-selected={option.value === sortBy} // Indique si l'option est sélectionnée
+											tabIndex={-1}                            // Non focusable directement
+											className={activeIndex === index ? styles.activeOption : ""} // Style si active
+											onClick={() => {                          // Gestion du clic
+												setSortBy(option.value);             // Met à jour le tri
+												setIsOpen(false);                    // Ferme le menu
+												buttonRef.current?.focus();          // Retourne le focus sur le bouton
 											}}
 										>
+											{/* Affiche le texte de l'option */}
 											{option.label}
 										</li>
 									))}
@@ -206,65 +229,79 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 							)}
 						</div>
 					</div>
-					{/* container des médias */}
+					{/* Conteneur principal pour les médias */}
 					<div className={styles.container_media}>
-						{/* parcourt la liste triée des médias */}
-						{sortedMedias.map((pictures,index)=>(
-						<div className={styles.card} key={pictures.id} 
->							<button
-								tabIndex={0}
-								type="button"
-								onClick={()=>{
-								// ouvre la modal média au clic
-								setMediaIndex(index);
-								setMediaModalOpen(true);
-								}}
-								onKeyDown={(e) => {
-									// ouvre la modal média au clavier (entrée ou espace)
-									if (e.key === "Enter" || e.key === " ") {
-										e.preventDefault();
-										setMediaIndex(index);
-										setMediaModalOpen(true);
-									}
-								}}
-								aria-label={`Ouvrir le média ${pictures.title}`}
-							>
-								{/* Si c'est une image */}
-								{pictures.image ? (
-								<Image
-									className={styles.picture}
-									src={`/assets/${pictures.image}`}
-									alt={pictures.title}
-									width={350}
-									height={300}
-									priority
-								/>
-								// Si c'est une vidéo
-								) : pictures.video ? (
-								<div className={styles.video} >
-									<FontAwesomeIcon className={styles.icon} icon={faVideo} />
+						{/* Parcourt la liste des médias triés */}
+						{sortedMedias.map((pictures, index) => (
+							<div className={styles.card} key={pictures.id}>
+								{/* Bouton pour ouvrir le média en modale */}
+								<button
+									tabIndex={0}      // Permet le focus clavier
+									type="button"
+									// Gestion de l'ouverture du média au clic
+									onClick={() => {  
+										// Met à jour l'index du média courant pour la modale
+										setMediaIndex(index);  
+										// Ouvre la modale média
+										setMediaModalOpen(true);  
+									}}
+									// Gestion de l'ouverture du média via le clavier (Enter ou Espace)
+									onKeyDown={(e) => {   
+										// Vérifie si la touche pressée est Enter ou Espace
+										if (e.key === "Enter" || e.key === " ") {
+											e.preventDefault();           // Empêche le comportement par défaut (scroll ou soumission)
+											// Met à jour l'index du média courant pour la modale
+											setMediaIndex(index);  
+											// Ouvre la modale média
+											setMediaModalOpen(true);  
+										}
+									}}
+									aria-label={`Ouvrir le média ${pictures.title}`} // Accessibilité
+								>
+									{/* Si le média est une image */}
+									{pictures.image ? (
+									<Image
+										className={styles.picture}
+										src={`/assets/${pictures.image}`}
+										alt={pictures.title}
+										width={350}
+										height={300}
+										priority
+									/>
+									// Si le média est une vidéo
+									) : pictures.video ? (
+									<div className={styles.video}>
+										<FontAwesomeIcon className={styles.icon} icon={faVideo} />
+									</div>
+									) : null}
+								</button>
+								{/* Conteneur de la description du média */}
+								<div className={styles.description}>
+									{/* Titre du média */}
+									<p className={styles.title}>{pictures.title}</p>
+									{/* Composant Likes pour gérer les likes */}
+									<Likes mediaId={pictures.id} initialLikes={pictures.likes} onLike={incrementAllLikes} />
 								</div>
-								) : null}
-							</button>
-							{/* conteneur de la description du média */}
-							<div className={styles.description}>
-								<p className={styles.title}>{pictures.title}</p>
-								<Likes mediaId={pictures.id} initialLikes={pictures.likes} onLike={incrementAllLikes} />
 							</div>
-						</div>
 						))}
 						{/* Modale pour afficher les médias en grand */}
 						<MediaModal
-							open={mediaModalOpen}
-							photographer={photographer}
-							imagesPhotographer={sortedMedias}
-							startIndex={mediaIndex}
-							close={() => setMediaModalOpen(false)}>
-						</MediaModal>
+							// Propriété qui contrôle si la modale est visible ou non
+							open={mediaModalOpen}  
+							// Données du photographe associé aux médias
+							photographer={photographer}  
+							// Liste des médias triés à afficher dans la modale
+							imagesPhotographer={sortedMedias}  
+							// Index du média à afficher au moment de l'ouverture de la modale
+							startIndex={mediaIndex}  
+							// Fonction pour fermer la modale, appelée lorsque l'utilisateur ferme
+							close={() => setMediaModalOpen(false)}  
+						/>
 						{/* Affiche le total des likes du photographe */}
 						<TotalLikes totalLikesPhotographer={allLikes} photographer={photographer}/>
 					</div>
 				</section>
+
 			</main>
 		</>
 	)

@@ -5,103 +5,113 @@ import ErrorMessage from "./ErrorMessage";
 
 // Déclare le composant ContactModal et récupère les propriétés open, close et photographer
 export default function ContactModal({ open, close, photographer }) {
-  // ⚡ États pour chaque champ du formulaire
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
-  // Référence de la modale pour le focus trap
-  const modalRef = useRef(null);
+// *******************************
+// ÉTATS DU FORMULAIRE
+	const [firstName, setFirstName] = useState("");
+	const [lastName, setLastName] = useState("");
+	const [email, setEmail] = useState("");
+	const [message, setMessage] = useState("");
+	// État pour afficher les messages d'erreur
+	const [errorMessage, setErrorMessage] = useState("");
 
-  // 🔒 Focus trap et navigation clavier
-  useEffect(() => {
-    if (!open || !modalRef.current) return;
+// *******************************
+// RÉFÉRENCE DE LA MODALE
+	// Référence pour gérer le focus trap dans la modale
+	const modalRef = useRef(null);
 
-    const focusableElements = modalRef.current.querySelectorAll(
-      "button, input, textarea, select, a[href]"
-    );
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
+// *******************************
+// FOCUS TRAP ET NAVIGATION CLAVIER
+	// Effet pour gérer le focus trap lorsque la modale est ouverte
+	useEffect(() => {
+		// Vérification si la modale est ouverte et si la référence existe
+		if (!open || !modalRef.current) return;
+		// Sélection de tous les éléments focusables dans la modale
+		const focusableElements = modalRef.current.querySelectorAll("button, input, textarea, select, a[href]");
+		// premier élément focusable
+		const firstElement = focusableElements[0];
+		// dernier élément focusable
+		const lastElement = focusableElements[focusableElements.length - 1]; // dernier élément focusable
+		// Fonction pour gérer la navigation clavier avec Tab et Shift+Tab
+		const handleKeyDown = (e) => {
+			if (e.key === "Tab") {
+				if (e.shiftKey) {
+					// Shift + Tab : boucle vers le dernier élément si le premier est actif
+					if (document.activeElement === firstElement) {
+						e.preventDefault();
+						lastElement.focus();
+					}
+				} else {
+					// Tab normal : boucle vers le premier élément si le dernier est actif
+					if (document.activeElement === lastElement) {
+						e.preventDefault();
+						firstElement.focus();
+					}
+				}
+			}
+		};
+		// Ajout de l'écouteur d'événement pour gérer la navigation clavier
+		document.addEventListener("keydown", handleKeyDown);
+		// Focus automatique sur le premier champ de la modale
+		firstElement.focus();
+		// Nettoyage : suppression de l'écouteur lors de la fermeture de la modale
+		return () => {
+			document.removeEventListener("keydown", handleKeyDown);
+		};
+	}, [open]);
 
-    const handleKeyDown = (e) => {
-      if (e.key === "Tab") {
-        if (e.shiftKey) {
-          // Shift + Tab
-          if (document.activeElement === firstElement) {
-            e.preventDefault();
-            lastElement.focus();
-          }
-        } else {
-          // Tab normal
-          if (document.activeElement === lastElement) {
-            e.preventDefault();
-            firstElement.focus();
-          }
-        }
-      }
-    };
+// *******************************
+// BLOQUER LE SCROLL DU BODY
 
-    document.addEventListener("keydown", handleKeyDown);
+	// Effet pour bloquer le scroll du body lorsque la modale est ouverte
+	useEffect(() => {
+		if (!open) return;
 
-    // Focus automatique sur le premier champ
-    firstElement.focus();
+		// Interdiction du scroll
+		document.body.style.overflow = "hidden";
 
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [open]);
+		// Réactivation du scroll lors de la fermeture
+		return () => {
+			document.body.style.overflow = "auto";
+		};
+	}, [open]);
 
-  // 🔒 Bloquer le scroll du body lorsque la modale est ouverte
-  useEffect(() => {
-    if (!open) return;
+// *******************************
+// RENDU CONDITIONNEL
 
-    document.body.style.overflow = "hidden";
+	// Ne rien rendre si la modale n'est pas ouverte
+	if (!open) return null;
 
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [open]);
-
-  // 🔹 Si la modale n’est pas ouverte, on ne rend rien
-  if (!open) return null;
-
-  // ✉️ Fonction pour gérer l'envoi du formulaire
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // 1️⃣ Vérification des champs obligatoires
-    if (!firstName || !lastName || !email || !message) {
-      setErrorMessage("Tous les champs sont obligatoires !");
-      console.error("Un ou plusieurs champs sont vides.");
-      return;
-    }
-
-    // 2️⃣ Vérification simple de l'email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setErrorMessage("Veuillez entrer un email valide.");
-      console.error("Email invalide :", email);
-      return;
-    }
-
-    // 3️⃣ Tout est valide, on réinitialise l'erreur
-    setErrorMessage("");
-
-    // 4️⃣ Envoi des données dans la console
-    console.log("Données du formulaire :", { firstName, lastName, email, message });
-
-    // 5️⃣ Réinitialisation des champs
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setMessage("");
-
-    // 6️⃣ Fermeture de la modale
-    close();
-  };
-
+// *******************************
+// GESTION DE L'ENVOI DU FORMULAIRE
+	// Fonction pour gérer l'envoi du formulaire
+	const handleSubmit = (e) => {
+		e.preventDefault(); // Empêche le rechargement de la page
+		// Vérification des champs obligatoires
+		if (!firstName || !lastName || !email || !message) {
+			setErrorMessage("Tous les champs sont obligatoires !");
+			console.error("Un ou plusieurs champs sont vides.");
+			return;
+		}
+		// Vérification simple du format de l'email
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (!emailRegex.test(email)) {
+			setErrorMessage("Veuillez entrer un email valide.");
+			console.error("Email invalide :", email);
+			return;
+		}
+		// Tout est valide, réinitialisation du message d'erreur
+		setErrorMessage("");
+		// Affichage des données du formulaire dans la console
+		console.log("Données du formulaire :", { firstName, lastName, email, message });
+		// Réinitialisation des champs du formulaire
+		setFirstName("");
+		setLastName("");
+		setEmail("");
+		setMessage("");
+		// 6️⃣ Fermeture de la modale
+		close();
+	};
 
  	return (
 	<div className={styles.superposition} role="presentation">

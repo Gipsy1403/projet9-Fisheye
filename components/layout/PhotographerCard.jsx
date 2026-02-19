@@ -8,24 +8,23 @@ import ErrorMessage from "../ui/ErrorMessage"
 // Déclare une fonction asynchrone exportée par défaut nommée PhotographerCard
 export default async function PhotographerCard(){
 
+	// Déclaration d'un tableau vide pour stocker les photographes
 	let allPhotographers = []
-
 	try {
-	// Appelle la fonction getAllPhotographers et attend la récupération des données
+	// Appel de la fonction getAllPhotographers et attente de la récupération des données
 	allPhotographers = await getAllPhotographers()
 
-	// Si la base de données est vide, lance une erreur personnalisée
+	// Vérification si la liste des photographes est vide ou nulle
 	if (!allPhotographers || allPhotographers.length === 0) {
+		// Lancement d'une erreur personnalisée si aucun photographe n'est trouvé
 		throw new Error("Aucun photographe trouvé")
 	}
 	} catch (error) {
-	// Message en console
-	console.error("Erreur lors de la récupération des photographes :", error)
-
-	// Message pour l'utilisateur
-	return <ErrorMessage message="Impossible de charger les photographes pour le moment. Veuillez réessayer plus tard." />
+		// Affichage de l'erreur dans la console pour le débogage
+		console.error("Erreur lors de la récupération des photographes :", error)
+		// Affichage d'un message d'erreur à l'utilisateur
+		return <ErrorMessage message="Impossible de charger les photographes pour le moment. Veuillez réessayer plus tard." />
 	}
-
 
 	return (
 		<>
