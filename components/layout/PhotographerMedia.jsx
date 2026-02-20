@@ -153,7 +153,7 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 								aria-expanded={isOpen}    // Indique si le menu est ouvert
 								aria-label={`Trier par ${sortOptions.find(option => option.value === sortBy)?.label}`}
 								// aria-labelledby="label_id"     // Lien avec le label pour l'accessibilité
-								aria-controls="sort-listbox"    // Lien avec la liste déroulante
+								// aria-controls="sort-listbox"    // Lien avec la liste déroulante
 								ref={buttonRef}   // Référence pour le focus
 							>
 								{/* Affiche le label correspondant à la valeur actuellement sélectionnée */}
@@ -175,9 +175,8 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 									aria-activedescendant={`sort-option-${filteredOptions[activeIndex]?.value}`}
 									// aria-activedescendant={activeOptionId}      // Indique l'option active pour l'accessibilité
 									ref={listboxRef}   // Référence pour le focus trap
-									id="sort-listbox"  // ID pour relier au bouton
+									// id="sort-listbox"  // ID pour relier au bouton
 									// Gestion de la navigation clavier dans le menu
-									hidden={!isOpen}
 									onKeyDown={(e) => {
 									// Flèche bas : passe à l'option suivante
 									if (e.key === "ArrowDown") {
