@@ -52,5 +52,40 @@ h1, h2, h3, h4, h5, h6, p{
   100% { transform: rotate(360deg); }
 }
 
+.container_notfound{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	height: 80vh;
+}
+.notfound_title{
+	color: var(--primary);
+	font-size: 64px;
+	margin-bottom: 2rem;
+	font-weight: 700;
+}
+.notfound_sentence{
+	font-size: 36px;
+	margin-bottom: 2rem;
 
+}
+.notfound_return{
+	font-size: 30px;
+	background-color: var(--primary);
+	color: var(--white);
+	padding: 10px 15px;
+	border-radius:5px;
+	cursor: pointer;
+	box-shadow: 4px 6px rgba(128, 128, 128, 0.499);
+	transition: all 0.2s ease;
+}
+.notfound_return:hover{
+	font-size: 30px;
+	background-color: var(--secondary);
+	box-shadow: 0 0 gray;
+	transform: translateX(3px);
+
+
+}
 }

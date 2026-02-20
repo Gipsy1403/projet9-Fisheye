@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo, faChevronDown} from "@fortawesome/free-solid-svg-icons";
 import Likes from "./Likes";
 import TotalLikes from "./TotalLikes";
-import ErrorMessage from "../ui/ErrorMessage"
+import NotFound from "../../app/not-found";
 
 // Déclare le composant PhotographerMedia et récupère les propriétés photographer, imagesPhotographer et totalLikesPhotographer
 export default function PhotographerMedia({ photographer, imagesPhotographer, totalLikesPhotographer }) {
@@ -85,21 +85,9 @@ export default function PhotographerMedia({ photographer, imagesPhotographer, to
 
 // **********************************
 // Vérification des données pour le rendu
-
-	// Vérification de la présence des informations du photographe
-	if (!photographer) {
-		// Message d'erreur en console si photographe absent
-		console.error("PhotographerMedia : photographe manquant !");
-		// Affichage d'un message d'erreur à l'utilisateur
-		return <ErrorMessage message="Informations du photographe indisponibles." />;
-	}
-
-	// Vérification de la présence des médias
-	if (!imagesPhotographer || imagesPhotographer.length === 0) {
-		// Message d'erreur en console si aucun média n'est disponible
-		console.error("PhotographerMedia : aucun média trouvé pour ce photographe !");
-		// Affichage d'un message d'erreur à l'utilisateur
-		return <ErrorMessage message="Aucun média disponible pour ce photographe." />;
+	// Vérification de la présence des médias ou la présence des informations du photographe
+	if (!imagesPhotographer || imagesPhotographer.length === 0 || !photographer ){
+		return <NotFound />;
 	}
 
 

@@ -5,6 +5,7 @@ import styles from "./MediaModal.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import ErrorMessage from "./ErrorMessage";
+import NotFound from "../../app/not-found";
 
 // Déclare le composant MediaModal et récupère les propriétés photographer, imagesPhotographer, startIndex, close et open
 export default function MediaModal({ photographer, imagesPhotographer, startIndex, close, open }) {
@@ -148,15 +149,8 @@ export default function MediaModal({ photographer, imagesPhotographer, startInde
 // **************************
 // VÉRIFICATIONS AVANT AFFICHAGE
 	// Vérification que la liste des médias existe et n'est pas vide
-	if (!imagesPhotographer || imagesPhotographer.length === 0) {
-		console.error("MediaModal : aucun média disponible pour ce photographe !");
-		return <ErrorMessage message="Aucun média disponible pour ce photographe." />;
-	}
-	// Vérification que le média courant existe pour l'index actuel
-	if (!currentMedia) {
-		console.error(`MediaModal : média introuvable à l'index ${index}`);
-		return <ErrorMessage message="Média introuvable." />;
-	}
+	if (!imagesPhotographer || imagesPhotographer.length === 0 || !currentMedia) return null ;
+	
 	// Vérification si la modale est ouverte, sinon ne rien rendre
 	if (!open) return null;
 	
