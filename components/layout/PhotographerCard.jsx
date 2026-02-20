@@ -39,11 +39,11 @@ export default async function PhotographerCard(){
 								width={200}
 								height={200}
 							/>
-							<h1 className={styles.name}>{photographer.name}</h1>
-						</Link>
+						<h1 className={styles.name}>{photographer.name}</h1>
 						<p className={styles.city}>{photographer.city}, {photographer.country}</p>
 						<p className={styles.tagline}>{photographer.tagline}</p>
 						<p className={styles.price}>{photographer.price} €/jour</p>
+						</Link>
 					</li>
 				))}
 			</ul>

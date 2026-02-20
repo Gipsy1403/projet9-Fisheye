@@ -134,6 +134,7 @@ export default function ContactModal({ open, close, photographer }) {
 					</label>
 					<input
 						className={styles.input}
+						aria-label="Saisir votre prénom"
 						type="text"
 						name="first_name"
 						id="first_name"
@@ -150,6 +151,7 @@ export default function ContactModal({ open, close, photographer }) {
 					</label>
 					<input
 						className={styles.input}
+						aria-label="Saisir votre nom"
 						type="text"
 						name="last_name"
 						id="last_name"
@@ -166,6 +168,7 @@ export default function ContactModal({ open, close, photographer }) {
 					</label>
 					<input
 						className={styles.input}
+						aria-label="Saisir votre email"
 						type="email"
 						name="email"
 						id="email"
@@ -185,6 +188,7 @@ export default function ContactModal({ open, close, photographer }) {
 					</label>
 					<textarea
 						className={styles.textarea}
+						aria-label="Saisir votre message"
 						name="your_message"
 						id="your_message"
 						placeholder="Votre message"
@@ -200,7 +204,6 @@ export default function ContactModal({ open, close, photographer }) {
 		</form>
 
 		<button
-			aria-labelledby="Close Contact form"
 			className={styles.btn}
 			onClick={close}
 			aria-label="Fermer le formulaire de contact"

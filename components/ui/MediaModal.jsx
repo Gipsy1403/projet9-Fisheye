@@ -191,6 +191,7 @@ export default function MediaModal({ photographer, imagesPhotographer, startInde
 							alt={currentMedia.title}   // Texte alternatif pour accessibilité
 							width={1050}   // Largeur de l'image
 							height={900}   // Hauteur de l'image
+							aria-label={currentMedia.title}
 							onLoad={() => setLoading(false)}   // Arrêt du spinner quand l'image est chargée
 							onError={() => { // Gestion des erreurs de chargement
 								console.error(`MediaModal : erreur de chargement de l'image ${currentMedia.image}`);
@@ -203,6 +204,7 @@ export default function MediaModal({ photographer, imagesPhotographer, startInde
 							controls  // Affiche les contrôles natifs de la vidéo
 							ref={videoRef} // Référence pour focus et manipulation
 							tabIndex={0} // Permet le focus clavier
+							aria-label={currentMedia.title}
 							onLoadedData={() => setLoading(false)}// Arrêt du spinner quand la vidéo est prête
 							onError={() => { // Gestion des erreurs de chargement vidéo
 								console.error(`MediaModal : erreur de chargement de la vidéo ${currentMedia.video}`);
@@ -216,13 +218,13 @@ export default function MediaModal({ photographer, imagesPhotographer, startInde
 						) : null} 
 
 						{/* Titre du média affiché sous l'image ou la vidéo */}
-						<p className={styles.media_title}>{currentMedia.title}</p>
+						<p className={styles.media_title} id="modal-title" aria-live="polite">{currentMedia.title}</p>
 					</div>
 					{/* Lien pour passer à l'image suivante */}
 					<Link
 						href="#"
 						className={styles.next}
-						aria-label="Next image"  // Accessibilité
+						aria-label="Media suivant"  // Accessibilité
 						onClick={(e) => { // Empêche le comportement par défaut et change l'image
 							e.preventDefault();
 							nextImage();
@@ -236,7 +238,7 @@ export default function MediaModal({ photographer, imagesPhotographer, startInde
 					<Link
 						href="#"
 						className={styles.previous}
-						aria-label="Previous image"  // Accessibilité
+						aria-label="Média précédent"  // Accessibilité
 						onClick={(e) => { // Empêche le comportement par défaut et change l'image
 							e.preventDefault();
 							previousImage();
@@ -246,7 +248,7 @@ export default function MediaModal({ photographer, imagesPhotographer, startInde
 					</Link>
 					{/* Bouton pour fermer la modale */}
 					<button 
-						aria-label="close dialog" // Accessibilité
+						aria-label="Ferme la visionneuse de media" // Accessibilité
 						className={styles.btn} // Style du bouton
 						onClick={close} // Appelle la fonction de fermeture
 					>
