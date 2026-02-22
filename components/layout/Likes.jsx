@@ -16,9 +16,9 @@ export default function Likes({ mediaId, initialLikes, onLike }) {
 	const [error, setError] = useState(null);
 	
 // ********************************************************
-	// fonction qui ajoute un like quand on clique ou appuie sur une touche
+	// fonction qui ajoute un like quand on clique dessus
 	const handleLike = async (e) => {
-		// empêche le clic de remonter au parent et d'ouvrir le carrousel
+		// empêche le clic de remonter au parent et d'ouvrir la modal
 		if (e?.stopPropagation) e.stopPropagation();
 		// calcule le nouveau nombre de likes
 		const newLikes = likes + 1;

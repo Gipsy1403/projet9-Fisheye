@@ -109,7 +109,7 @@ export default function ContactModal({ open, close, photographer }) {
 		setLastName("");
 		setEmail("");
 		setMessage("");
-		// 6️⃣ Fermeture de la modale
+		// Fermeture de la modale
 		close();
 	};
 

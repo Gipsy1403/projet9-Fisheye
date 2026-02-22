@@ -1,5 +1,5 @@
 // Déclare une fonction asynchrone nommée updateLike exportée
-export async function updateLike(mediaId, newLikes) {
+export async function updateLike(mediaId, newNumberOfLikes) {
 	// Envoie une requête HTTP vers l’API pour mettre à jour les likes
 	const res = await fetch("/api/likes", {
 		// Définit la méthode HTTP PATCH pour modifier une ressource existante
@@ -9,8 +9,8 @@ export async function updateLike(mediaId, newLikes) {
 			// Indique que le corps de la requête est au format JSON
 			"Content-Type": "application/json",
 		},
-		// Convertit les données mediaId et newLikes en chaîne JSON pour l’envoi
-		body: JSON.stringify({ mediaId, newLikes }),
+		// Convertit les données mediaId et newNumberOfLikes en chaîne JSON pour l’envoi
+		body: JSON.stringify({ mediaId, newNumberOfLikes }),
 	});
 	// Vérifie si la réponse du serveur indique une erreur
 	if (!res.ok) {
